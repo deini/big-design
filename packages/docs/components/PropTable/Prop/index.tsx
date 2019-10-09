@@ -15,20 +15,20 @@ interface Props {
 export const Prop: React.FC<Props> = props => {
   const { children, defaults, name, required, types } = props;
 
-  return (
-    <Table.Row>
-      <StyledTableCell>
-        <Code primary>{name}</Code>
-        {required ? <b> *</b> : null}
-      </StyledTableCell>
-      <StyledTableCell>
-        <TypesData types={types} />
-      </StyledTableCell>
-      <StyledTableCell>
-        <Code highlight={false}>{defaults}</Code>
-      </StyledTableCell>
-      <StyledTableCell>{children}</StyledTableCell>
-    </Table.Row>
+  return (null
+    // <Table.Row>
+    //   <StyledTableCell>
+    //     <Code primary>{name}</Code>
+    //     {required ? <b> *</b> : null}
+    //   </StyledTableCell>
+    //   <StyledTableCell>
+    //     <TypesData types={types} />
+    //   </StyledTableCell>
+    //   <StyledTableCell>
+    //     <Code highlight={false}>{defaults}</Code>
+    //   </StyledTableCell>
+    //   <StyledTableCell>{children}</StyledTableCell>
+    // </Table.Row>
   );
 };
 

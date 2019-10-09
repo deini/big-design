@@ -2,7 +2,7 @@ import { Flex, H0, H1, H2, Pagination, Table } from '@bigcommerce/big-design';
 import React from 'react';
 
 import { CodePreview } from '../../components';
-import { TableActionsPropTable, TableBodyPropTable, TableCellPropTable, TablePropTable } from '../../PropTables';
+// import { TableActionsPropTable, TableBodyPropTable, TableCellPropTable, TablePropTable } from '../../PropTables';
 
 interface Data {
   sku: string;
@@ -10,11 +10,22 @@ interface Data {
   price: number;
 }
 
-function createData(sku, name, price): Data {
-  return { sku, name, price };
+// function createData(sku, name, price): Data {
+function createData(sku, name, price) {
+  // return { sku, name, price };
+  return {
+    cells: [
+      { content: sku },
+      { content: name },
+      {
+        content: <h1>{price}</h1>,
+      },
+    ],
+  };
 }
 
-const data: Data[] = [
+// const data: Data[] = [
+const data = [
   createData('SM13', '[Sample] Smith Journal 13', 25),
   createData('DPB', '[Sample] Dustpan & Brush', 34.95),
   createData('OFSUC', '[Sample] Utility Caddy', 45.95),
@@ -30,17 +41,18 @@ const data: Data[] = [
   createData('SLCTBS', '[Sample] Fog Linen Chambray Towel - Beige Stripe with some fondu of some sort', 49),
 ];
 
-const columns: Array<{
-  id: string;
-  label: string;
-  minWidth?: number;
-  align?: 'left' | 'center' | 'right';
-  format?(value): string;
-}> = [
-  { id: 'sku', label: 'Product SKU', minWidth: 124 },
-  { id: 'name', label: 'Product Name', minWidth: 120 },
-  { id: 'price', label: 'Price', align: 'right', format: value => `$${value.toFixed(2)}` },
-];
+// const columns: Array<{
+//   id: string;
+//   label: string;
+//   minWidth?: number;
+//   align?: 'left' | 'center' | 'right';
+//   format?(value): string;
+// }> = [
+//   { id: 'sku', label: 'Product SKU', minWidth: 124 },
+//   { id: 'name', label: 'Product Name', minWidth: 120 },
+//   { id: 'price', label: 'Price', align: 'right', format: value => `$${value.toFixed(2)}` },
+// ];
+const columns = [{ content: 'Sku' }, { content: 'Name' }, { content: 'Price' }];
 
 export default () => {
   return (
@@ -61,7 +73,7 @@ export default () => {
           const [items] = React.useState(data);
           const [ranges] = React.useState([10, 20, 30, 50, 100]);
 
-          const [range, setRange] = React.useState(ranges[1]);
+          const [range, setRange] = React.useState(ranges[0]);
           const [page, setPage] = React.useState(1);
           const [currentItems, setCurrentItems] = React.useState([]);
 
@@ -79,51 +91,27 @@ export default () => {
             setCurrentItems(items.slice(firstItem, lastItem));
           }, [page, items, range]);
 
-          const handleRowSelect = e => console.log(e); // tslint:disable-line
+          const [selectedItems, setSelectedItems] = React.useState([]);
 
           return (
             <>
-              <Table selectable stickyHeader>
-                <Table.Actions alignItems="center" justifyContent="stretch">
-                  <Flex.Item flexGrow={2}>Products</Flex.Item>
-                  <Flex.Item>
-                    <Pagination
-                      currentPage={page}
-                      itemsPerPage={range}
-                      itemsPerPageOptions={ranges}
-                      totalItems={items.length}
-                      onPageChange={newPage => setPage(newPage)}
-                      onItemsPerPageChange={onItemsPerPageChange}
-                    />
-                  </Flex.Item>
-                </Table.Actions>
-                <Table.Head>
-                  <Table.Row>
-                    {columns.map(column => (
-                      <Table.Cell key={column.id} minWidth={column.minWidth} align={column.align}>
-                        {column.label}
-                      </Table.Cell>
-                    ))}
-                  </Table.Row>
-                </Table.Head>
-                <Table.Body>
-                  {currentItems.map((row, index) => {
-                    return (
-                      <Table.Row key={index} onRowSelect={handleRowSelect}>
-                        {columns.map(column => {
-                          const value = row[column.id];
-
-                          return (
-                            <Table.Cell key={column.id} align={column.align}>
-                              {column.format && typeof value === 'number' ? column.format(value) : value}
-                            </Table.Cell>
-                          );
-                        })}
-                      </Table.Row>
-                    );
-                  })}
-                </Table.Body>
-              </Table>
+              <Table
+                stickyHeader
+                headers={columns}
+                rows={currentItems}
+                selectable={{
+                  onSelectionChange: setSelectedItems,
+                  selectedItems,
+                }}
+                pagination={{
+                  currentPage: page,
+                  totalItems: items.length,
+                  onPageChange: setPage,
+                  itemsPerPageOptions: ranges,
+                  onItemsPerPageChange: setRange,
+                  itemsPerPage: range,
+                }}
+              />
             </>
           );
         }}
@@ -134,7 +122,7 @@ export default () => {
 
       <H2>Table</H2>
 
-      <TablePropTable />
+      {/* <TablePropTable />
 
       <H2>Table.Actions</H2>
 
@@ -152,7 +140,7 @@ export default () => {
 
       <H2>Table.Head</H2>
 
-      <H2>Table.Row</H2>
+      <H2>Table.Row</H2> */}
 
       {/* <H2>Static Member</H2>
       <H2>Inherited Props</H2>

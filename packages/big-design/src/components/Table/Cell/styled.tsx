@@ -1,9 +1,9 @@
 import { theme as defaultTheme } from '@bigcommerce/big-design-theme';
 import styled, { css } from 'styled-components';
 
-import { TableCellProps } from './Cell';
+import { CellProps } from './Cell';
 
-interface SharedCellProps extends TableCellProps {
+interface SharedCellProps extends CellProps {
   stickyHeader?: boolean;
 }
 

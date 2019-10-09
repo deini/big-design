@@ -4,9 +4,9 @@ import { TableSectionContext } from '../context';
 
 import { StyledTableHead } from './styled';
 
-export type TableHeadProps = React.TableHTMLAttributes<HTMLTableSectionElement>;
+export type HeadProps = React.TableHTMLAttributes<HTMLTableSectionElement>;
 
-export const TableHead: React.FC<TableHeadProps> = ({ className, style, ...props }) => (
+export const Head: React.FC<HeadProps> = ({ className, style, ...props }) => (
   <TableSectionContext.Provider value="thead">
     <StyledTableHead {...props} />
   </TableSectionContext.Provider>

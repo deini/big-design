@@ -1,54 +1,81 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 import { uniqueId } from '../../utils';
 
 import { TableContext } from './context';
 import { StyledTable, StyledTableFigure } from './styled';
-import { TableActions, TableActionsProps } from './Actions';
-import { TableBody, TableBodyProps } from './Body';
-import { TableCell, TableCellProps } from './Cell';
-import { TableFooter, TableFooterProps } from './Footer';
-import { TableHead, TableHeadProps } from './Head';
-import { TableRow, TableRowProps } from './Row';
+import { TableCell, TableProps, TableRow } from './types';
+import { Actions } from './Actions';
+import { Body } from './Body';
+import { Cell } from './Cell';
+import { Head } from './Head';
+import { Row } from './Row';
 
-export interface TableProps extends React.TableHTMLAttributes<HTMLTableElement & { children: React.ReactNode }> {
-  selectable?: boolean;
-  stickyHeader?: boolean;
-}
+export const Table: React.FC<TableProps> = memo(props => {
+  const { className, stickyHeader, style, rows, headers, pagination, selectable, id, ...rest } = props;
+  const tableId = id || uniqueId('table_');
+  const isSelectable = Boolean(selectable);
 
-interface Table extends React.FC<TableProps> {
-  Actions: TableActionsProps;
-  Body: TableBodyProps;
-  Cell: TableCellProps;
-  Footer: TableFooterProps;
-  Head: TableHeadProps;
-  Row: TableRowProps;
-}
+  const renderHeaders = () => (
+    <Head>
+      <Row isSelectable={isSelectable}>
+        {headers.map((header, index) => (
+          <Cell key={getKey(header.key, index)}>{header.content}</Cell>
+        ))}
+      </Row>
+    </Head>
+  );
 
-export function Table(this: Table, props: TableProps) {
-  const { className, selectable, stickyHeader, style, ...rest } = props;
-  const children = React.Children.toArray(props.children) as React.ReactElement[];
+  const isRowSelected = (row: TableRow) => {
+    return selectable && selectable.selectedItems.includes(row);
+  };
 
-  const tableId = uniqueId('table_');
+  const renderRows = () => (
+    <Body>
+      {rows.map((row, rowIndex) => (
+        <Row
+          isSelectable={isSelectable}
+          key={getKey(row.key, rowIndex)}
+          onRowSelect={nextValue => handleRowSelect(row, nextValue)}
+          selected={isRowSelected(row)}
+        >
+          {renderCells(row.cells)}
+        </Row>
+      ))}
+    </Body>
+  );
 
-  const actions = children.filter(child => child.type === Table.Actions);
-  const content = children.filter(child => child.type !== Table.Actions);
+  const renderCells = (cells: TableCell[] = []) => {
+    return cells.map((cell, cellIndex) => <Cell key={getKey(cell.key, cellIndex)}>{cell.content}</Cell>);
+  };
+
+  const handleRowSelect = (row: TableRow, isSelected: boolean) => {
+    if (!selectable) {
+      return;
+    }
+
+    const { selectedItems, onSelectionChange } = selectable;
+
+    if (isSelected) {
+      onSelectionChange([...selectedItems, row]);
+    } else {
+      onSelectionChange(selectedItems.filter(item => item !== row));
+    }
+  };
 
   return (
-    <TableContext.Provider value={{ selectable, stickyHeader, tableId }}>
-      {actions}
+    <TableContext.Provider value={{ stickyHeader, tableId }}>
+      <Actions pagination={pagination} selectable={selectable} rows={rows} />
       <StyledTable id={tableId} {...rest}>
-        {content}
+        {renderHeaders()}
+        {renderRows()}
       </StyledTable>
     </TableContext.Provider>
   );
-}
+});
 
-Table.Actions = TableActions;
-Table.Body = TableBody;
-Table.Cell = TableCell;
-Table.Footer = TableFooter;
-Table.Head = TableHead;
-Table.Row = TableRow;
+const getKey = (key: string | number | undefined, fallbackKey: number): string | number => {
+  return key === undefined ? fallbackKey : key;
+};
 
 export const TableFigure: React.FC<any> = ({ className, style, ...props }) => <StyledTableFigure {...props} />;
