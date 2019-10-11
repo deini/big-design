@@ -1,22 +1,20 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
 import { Checkbox } from '../../Checkbox';
 import { Flex } from '../../Flex';
 import { Pagination } from '../../Pagination';
-import { TableContext } from '../context';
-import { TablePagination, TableRow, TableSelectable } from '../types';
+import { TableItem, TablePagination, TableSelectable } from '../types';
 
 import { StyledActions } from './styled';
 
 export interface ActionsProps {
+  items: TableItem[];
   pagination?: TablePagination;
   selectable?: TableSelectable;
-  rows: TableRow[];
+  tableId: string;
 }
 
-export const Actions: React.FC<ActionsProps> = ({ selectable, pagination, rows = [], ...props }) => {
-  const { tableId } = useContext(TableContext);
-
+export const Actions: React.FC<ActionsProps> = ({ selectable, pagination, tableId, items = [], ...props }) => {
   const handleSelectAll = () => {
     if (!selectable) {
       return;
@@ -27,13 +25,13 @@ export const Actions: React.FC<ActionsProps> = ({ selectable, pagination, rows =
     if (selectedItems.length > 0) {
       onSelectionChange([]);
     } else {
-      onSelectionChange([...rows]);
+      onSelectionChange([...items]);
     }
   };
 
   const renderSelectAllAction = ({ selectedItems }: TableSelectable) => {
     const totalSelectedItems = selectedItems.length;
-    const totalItemsInPage = rows.length;
+    const totalItemsInPage = items.length;
     const isChecked = totalSelectedItems === totalItemsInPage && totalItemsInPage > 0;
     const isIndeterminate = totalSelectedItems > 0 && totalSelectedItems !== totalItemsInPage;
 

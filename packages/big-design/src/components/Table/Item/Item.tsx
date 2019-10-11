@@ -4,31 +4,31 @@ import { Checkbox } from '../../Checkbox';
 import { TableSectionContext } from '../context';
 import { Cell } from '../Cell/Cell';
 
-import { StyledTableRow } from './styled';
+import { StyledTableItem } from './styled';
 
-export interface RowProps extends React.TableHTMLAttributes<HTMLTableRowElement> {
+export interface ItemProps extends React.TableHTMLAttributes<HTMLTableRowElement> {
   isSelectable: boolean;
   selected?: boolean;
-  onRowSelect?(nextValue: boolean): void;
+  onItemSelect?(nextValue: boolean): void;
 }
 
-export const Row: React.FC<RowProps> = memo(({ children, isSelectable, selected = false, onRowSelect, ...props }) => {
+export const Item: React.FC<ItemProps> = memo(({ children, isSelectable, selected = false, onItemSelect, ...props }) => {
   const tableSectionContext = useContext(TableSectionContext);
 
   const handleSelect = () => {
-    if (typeof onRowSelect === 'function') {
-      onRowSelect(!selected);
+    if (typeof onItemSelect === 'function') {
+      onItemSelect(!selected);
     }
   };
 
   return (
-    <StyledTableRow selected={selected} {...props}>
+    <StyledTableItem selected={selected} {...props}>
       {isSelectable ? (
         <Cell isCheckbox>
           {tableSectionContext === 'tbody' ? <Checkbox checked={selected} onChange={handleSelect} /> : null}
         </Cell>
       ) : null}
       {children}
-    </StyledTableRow>
+    </StyledTableItem>
   );
 });

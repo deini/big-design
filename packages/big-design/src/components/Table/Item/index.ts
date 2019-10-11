@@ -1,1 +1,1 @@
-export { Row, RowProps } from './Row';
+export { Item, ItemProps } from './Item';

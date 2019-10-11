@@ -1,46 +1,46 @@
-import React, { memo } from 'react';
+import React, { memo, useRef } from 'react';
 
 import { uniqueId } from '../../utils';
 
 import { TableContext } from './context';
 import { StyledTable, StyledTableFigure } from './styled';
-import { TableCell, TableProps, TableRow } from './types';
+import { TableCell, TableItem, TableProps } from './types';
 import { Actions } from './Actions';
 import { Body } from './Body';
 import { Cell } from './Cell';
 import { Head } from './Head';
-import { Row } from './Row';
+import { Item } from './Item';
 
 export const Table: React.FC<TableProps> = memo(props => {
-  const { className, stickyHeader, style, rows, headers, pagination, selectable, id, ...rest } = props;
-  const tableId = id || uniqueId('table_');
+  const { className, stickyHeader, style, items, headers, pagination, selectable, id, ...rest } = props;
+  const tableIdRef = useRef(id || uniqueId('table_'));
   const isSelectable = Boolean(selectable);
 
   const renderHeaders = () => (
     <Head>
-      <Row isSelectable={isSelectable}>
+      <Item isSelectable={isSelectable}>
         {headers.map((header, index) => (
           <Cell key={getKey(header.key, index)}>{header.content}</Cell>
         ))}
-      </Row>
+      </Item>
     </Head>
   );
 
-  const isRowSelected = (row: TableRow) => {
+  const isRowSelected = (row: TableItem) => {
     return selectable && selectable.selectedItems.includes(row);
   };
 
-  const renderRows = () => (
+  const renderItems = () => (
     <Body>
-      {rows.map((row, rowIndex) => (
-        <Row
+      {items.map((row, rowIndex) => (
+        <Item
           isSelectable={isSelectable}
           key={getKey(row.key, rowIndex)}
-          onRowSelect={nextValue => handleRowSelect(row, nextValue)}
+          onItemSelect={nextValue => handleRowSelect(row, nextValue)}
           selected={isRowSelected(row)}
         >
           {renderCells(row.cells)}
-        </Row>
+        </Item>
       ))}
     </Body>
   );
@@ -49,7 +49,7 @@ export const Table: React.FC<TableProps> = memo(props => {
     return cells.map((cell, cellIndex) => <Cell key={getKey(cell.key, cellIndex)}>{cell.content}</Cell>);
   };
 
-  const handleRowSelect = (row: TableRow, isSelected: boolean) => {
+  const handleRowSelect = (row: TableItem, isSelected: boolean) => {
     if (!selectable) {
       return;
     }
@@ -64,11 +64,11 @@ export const Table: React.FC<TableProps> = memo(props => {
   };
 
   return (
-    <TableContext.Provider value={{ stickyHeader, tableId }}>
-      <Actions pagination={pagination} selectable={selectable} rows={rows} />
-      <StyledTable id={tableId} {...rest}>
+    <TableContext.Provider value={{ stickyHeader }}>
+      <Actions pagination={pagination} selectable={selectable} items={items} tableId={tableIdRef.current} />
+      <StyledTable id={tableIdRef.current} {...rest}>
         {renderHeaders()}
-        {renderRows()}
+        {renderItems()}
       </StyledTable>
     </TableContext.Provider>
   );

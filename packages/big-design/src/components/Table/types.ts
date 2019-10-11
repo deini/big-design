@@ -7,7 +7,7 @@ export interface TableCell {
   key?: string | number;
 }
 
-export interface TableRow {
+export interface TableItem {
   cells: TableCell[];
   key?: string | number;
 }
@@ -19,7 +19,7 @@ export interface TableHeaders {
 }
 
 export interface TableSelectable {
-  selectedItems: TableRow[];
+  selectedItems: TableItem[];
   onSelectionChange: any; // puse any pq el example llora por ts
 }
 
@@ -27,7 +27,7 @@ export type TablePagination = Omit<PaginationProps, keyof MarginProps>;
 
 export interface TableProps extends React.TableHTMLAttributes<HTMLTableElement> {
   stickyHeader?: boolean;
-  rows: TableRow[];
+  items: TableItem[];
   headers: TableHeaders[];
   pagination?: TablePagination;
   selectable?: TableSelectable;

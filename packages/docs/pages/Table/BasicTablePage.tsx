@@ -98,7 +98,7 @@ export default () => {
               <Table
                 stickyHeader
                 headers={columns}
-                rows={currentItems}
+                items={currentItems}
                 selectable={{
                   onSelectionChange: setSelectedItems,
                   selectedItems,
