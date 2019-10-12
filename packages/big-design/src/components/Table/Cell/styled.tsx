@@ -47,6 +47,7 @@ export const StyledTableHeader = styled.th<SharedCellProps>`
   box-shadow: ${({ theme }) =>
     `inset 0px -1px 0px ${theme.colors.secondary30}, inset 0px 1px 0px ${theme.colors.secondary30}`};
   color: ${({ theme }) => theme.colors.secondary60};
+  white-space: nowrap;
 
   ${props =>
     props.stickyHeader &&

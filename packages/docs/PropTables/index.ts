@@ -1,5 +1,5 @@
-// export * from './BadgePropTable';
-// export * from './BoxPropTable';
+export * from './BadgePropTable';
+export * from './BoxPropTable';
 // export * from './ButtonPropTable';
 // export * from './CheckboxPropTable';
 // export * from './DropdownPropTable';
@@ -8,7 +8,7 @@
 // export * from './GridPropTable';
 export * from './IconPropTable';
 // export * from './InputPropTable';
-// export * from './MarginPropTable';
+export * from './MarginPropTable';
 // export * from './ModalPropTable';
 // export * from './PaddingPropTable';
 // export * from './PaginationPropTable';

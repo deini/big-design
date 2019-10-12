@@ -69,9 +69,15 @@ export const Table: React.FC<TableProps> = memo(props => {
     }
   };
 
+  const shouldRenderActions = () => {
+    return Boolean(pagination) || Boolean(selectable);
+  };
+
   return (
     <TableContext.Provider value={{ stickyHeader }}>
-      <Actions pagination={pagination} selectable={selectable} items={items} tableId={tableIdRef.current} />
+      {shouldRenderActions() && (
+        <Actions pagination={pagination} selectable={selectable} items={items} tableId={tableIdRef.current} />
+      )}
       <StyledTable id={tableIdRef.current} {...rest}>
         {renderHeaders()}
         {renderItems()}

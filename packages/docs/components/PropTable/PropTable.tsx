@@ -8,7 +8,7 @@ import { Footer } from './Footer';
 import { Prop, TypesData } from './Prop';
 import { StyledTableCell } from './Prop/styled';
 
-interface Prop {
+export interface Prop {
   name: ReactNode;
   types: ReactNode | ReactNode[];
   defaultValue?: ReactNode;
@@ -16,7 +16,7 @@ interface Prop {
   required?: boolean;
 }
 
-interface PropTableProps {
+export interface PropTableProps {
   propList: Prop[];
 }
 
