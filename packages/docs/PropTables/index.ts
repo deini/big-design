@@ -1,11 +1,11 @@
 export * from './BadgePropTable';
 export * from './BoxPropTable';
-// export * from './ButtonPropTable';
-// export * from './CheckboxPropTable';
-// export * from './DropdownPropTable';
-// export * from './FlexPropTable';
-// export * from './FormPropTable';
-// export * from './GridPropTable';
+export * from './ButtonPropTable';
+export * from './CheckboxPropTable';
+export * from './DropdownPropTable';
+export * from './FlexPropTable';
+export * from './FormPropTable';
+export * from './GridPropTable';
 export * from './IconPropTable';
 // export * from './InputPropTable';
 export * from './MarginPropTable';
