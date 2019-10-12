@@ -3,7 +3,7 @@ import React from 'react';
 
 import { Code } from '../../';
 
-import { StyledTableCell } from './styled';
+export { StyledTableCell } from './styled';
 
 interface Props {
   name: string;
@@ -36,7 +36,7 @@ interface TypesDataProps {
   types: any;
 }
 
-const TypesData: React.FC<TypesDataProps> = (props): any => {
+export const TypesData: React.FC<TypesDataProps> = (props): any => {
   const { types } = props;
 
   if (Array.isArray(types)) {

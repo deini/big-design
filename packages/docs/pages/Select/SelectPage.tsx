@@ -2,7 +2,7 @@ import { Form, Grid, H0, H1, H2, Link, Select, Text } from '@bigcommerce/big-des
 import React from 'react';
 
 import { Code, CodePreview } from '../../components';
-import { SelectOptionPropTable, SelectPropTable } from '../../PropTables';
+// import { SelectOptionPropTable, SelectPropTable } from '../../PropTables';
 
 export default () => (
   <>
@@ -64,11 +64,11 @@ export default () => (
 
     <H2>Select</H2>
 
-    <SelectPropTable />
+    {/* <SelectPropTable /> */}
 
     <H2>Select.Option</H2>
 
-    <SelectOptionPropTable />
+    {/* <SelectOptionPropTable /> */}
 
     <H1>Multiselect</H1>
 

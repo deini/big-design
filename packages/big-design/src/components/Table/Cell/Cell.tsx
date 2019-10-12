@@ -1,23 +1,28 @@
 import React, { useContext } from 'react';
 
 import { TableContext, TableSectionContext } from '../context';
+import { TableCell } from '../types';
 
 import { StyledTableCell, StyledTableHeader } from './styled';
 
-export interface CellProps extends React.TableHTMLAttributes<HTMLTableCellElement> {
-  align?: 'left' | 'center' | 'right';
-  colSpan?: number;
+export interface CellProps extends React.TableHTMLAttributes<HTMLTableCellElement>, Omit<TableCell, 'content'> {
   isCheckbox?: boolean;
-  minWidth?: number;
 }
 
-export const Cell: React.FC<CellProps> = ({ className, style, ...props }) => {
+export const Cell: React.FC<CellProps> = ({ children, ...props }) => {
   const tableContext = useContext(TableContext);
   const tableSectionContext = useContext(TableSectionContext);
+  const isTextContent = typeof children === 'string';
 
   if (tableSectionContext === 'thead') {
-    return <StyledTableHeader stickyHeader={tableContext.stickyHeader} {...props} />;
+    return isTextContent ? (
+      <StyledTableHeader stickyHeader={tableContext.stickyHeader} {...props}>
+        {children}
+      </StyledTableHeader>
+    ) : (
+      <th {...props}>{children}</th>
+    );
   }
 
-  return <StyledTableCell {...props} />;
+  return isTextContent ? <StyledTableCell {...props}>{children}</StyledTableCell> : <td {...props}>{children}</td>;
 };

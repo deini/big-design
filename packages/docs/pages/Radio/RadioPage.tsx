@@ -2,7 +2,7 @@ import { Form, H0, H1, H2, Link, Radio, Text } from '@bigcommerce/big-design';
 import React from 'react';
 
 import { Code, CodePreview } from '../../components';
-import { RadioPropTable } from '../../PropTables';
+// import { RadioPropTable } from '../../PropTables';
 
 export default () => (
   <>
@@ -43,7 +43,7 @@ export default () => (
       Supports all native <Code>&lt;input /&gt;</Code> element attributes.
     </Text>
 
-    <RadioPropTable />
+    {/* <RadioPropTable /> */}
 
     <H1>Grouping</H1>
 

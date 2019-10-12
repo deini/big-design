@@ -2,7 +2,7 @@ import { Button, H0, H1, Text } from '@bigcommerce/big-design';
 import React from 'react';
 
 import { CodePreview, NextLink } from '../../components';
-import { MarginPropTable } from '../../PropTables';
+// import { MarginPropTable } from '../../PropTables';
 
 export default () => (
   <>
@@ -43,6 +43,6 @@ export default () => (
 
     <H1>API</H1>
 
-    <MarginPropTable />
+    {/* <MarginPropTable /> */}
   </>
 );

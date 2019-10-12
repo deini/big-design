@@ -2,7 +2,7 @@ import { Checkbox, Form, H0, H1, H2, Link, Text } from '@bigcommerce/big-design'
 import React from 'react';
 
 import { Code, CodePreview } from '../../components';
-import { CheckboxPropTable } from '../../PropTables';
+// import { CheckboxPropTable } from '../../PropTables';
 
 export default () => (
   <>
@@ -39,7 +39,7 @@ export default () => (
       Supports all native <Code>&lt;input /&gt;</Code> element attributes.
     </Text>
 
-    <CheckboxPropTable />
+    {/* <CheckboxPropTable /> */}
 
     <H1>Indeterminate</H1>
 

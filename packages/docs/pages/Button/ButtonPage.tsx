@@ -3,7 +3,7 @@ import { AddIcon, ArrowDropDownIcon } from '@bigcommerce/big-design-icons';
 import React from 'react';
 
 import { Code, CodePreview, Collapsible } from '../../components';
-import { ButtonPropTable, MarginPropTable } from '../../PropTables';
+// import { ButtonPropTable, MarginPropTable } from '../../PropTables';
 
 export default () => (
   <>
@@ -29,12 +29,12 @@ export default () => (
 
     <H2>Button</H2>
 
-    <ButtonPropTable />
+    {/* <ButtonPropTable /> */}
 
     <H2>Inherited Props</H2>
 
     <Collapsible title="Margin Props">
-      <MarginPropTable />
+      {/* <MarginPropTable /> */}
     </Collapsible>
 
     <H1>Variants</H1>

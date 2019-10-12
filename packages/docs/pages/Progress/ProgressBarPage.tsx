@@ -2,7 +2,7 @@ import { Box, H0, H1, H2, Link, ProgressBar, Text } from '@bigcommerce/big-desig
 import React from 'react';
 
 import { Code, CodePreview } from '../../components';
-import { ProgressBarPropTable } from '../../PropTables';
+// import { ProgressBarPropTable } from '../../PropTables';
 
 export default () => (
   <>
@@ -49,6 +49,6 @@ export default () => (
 
     <H2>ProgressBar</H2>
 
-    <ProgressBarPropTable />
+    {/* <ProgressBarPropTable /> */}
   </>
 );

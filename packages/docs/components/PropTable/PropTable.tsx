@@ -1,39 +1,74 @@
-import { Table, TableFigure } from '@bigcommerce/big-design';
-import React from 'react';
+import { Small, Table, TableFigure } from '@bigcommerce/big-design';
+import { TableCell } from '@bigcommerce/big-design/dist/src/components/Table/types';
+import React, { ReactNode } from 'react';
 
-// import { Footer } from './Footer';
-// import { Header } from './Header';
-import { Prop } from './Prop';
+import { Code } from '../Code';
 
-export class PropTable extends React.PureComponent {
+import { Footer } from './Footer';
+import { Prop, TypesData } from './Prop';
+import { StyledTableCell } from './Prop/styled';
+
+interface Prop {
+  name: ReactNode;
+  types: ReactNode | ReactNode[];
+  defaultValue?: ReactNode;
+  description: ReactNode;
+  required?: boolean;
+}
+
+interface PropTableProps {
+  propList: Prop[];
+}
+
+export class PropTable extends React.PureComponent<PropTableProps> {
   static Prop = Prop;
-  // private static Header = Header;
-  // private static Footer = Footer;
+  private static Footer = Footer;
 
   render() {
+    const items = this.props.propList.map(({ name, types, description, defaultValue = '', required }) => ({
+      cells: [
+        {
+          content: (
+            <StyledTableCell>
+              <Code primary>{name}</Code>
+              {required ? <b> *</b> : null}
+            </StyledTableCell>
+          ),
+        },
+        {
+          content: (
+            <StyledTableCell>
+              <TypesData types={types} />
+            </StyledTableCell>
+          ),
+        },
+        {
+          content: (
+            <StyledTableCell>
+              <Code highlight={false}>{defaultValue}</Code>
+            </StyledTableCell>
+          ),
+        },
+        {
+          content: <StyledTableCell>{description}</StyledTableCell>,
+        },
+      ] as TableCell[],
+    }));
+
     return (
       <TableFigure>
-        {/* <Table>
-          <Table.Actions>Test</Table.Actions>
-          <Table.Head>
-            <PropTable.Header />
-          </Table.Head>
-          <Table.Body>{this.renderChildren()}</Table.Body>
-          <Table.Footer>
-            <PropTable.Footer />
-          </Table.Footer>
-        </Table> */}
+        <Table
+          headers={[
+            { content: 'Prop Name' },
+            { content: 'Type' },
+            { content: 'Default' },
+            { content: 'Description', widthPercent: 50 },
+          ]}
+          items={items}
+        />
+
+        <Small>Props ending with * are required</Small>
       </TableFigure>
     );
-  }
-
-  private renderChildren() {
-    const { children } = this.props;
-
-    return React.Children.map(children, child => {
-      if (React.isValidElement(child) && child.type === PropTable.Prop) {
-        return child;
-      }
-    });
   }
 }

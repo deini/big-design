@@ -14,24 +14,30 @@ const SharedCellStyles = css<SharedCellProps>`
   min-height: ${({ theme }) => theme.spacing.xxxLarge};
   padding: ${({ theme }) => theme.spacing.small};
 
-  ${({ minWidth, theme }) =>
-    minWidth &&
+  ${({ align }) =>
+    align &&
     css`
-      min-width: ${theme.helpers.remCalc(minWidth)};
-    `}
+      text-align: ${align};
+    `};
 
-  ${props =>
-    props.align &&
+  ${({ verticalAlign }) =>
+    verticalAlign &&
     css`
-      text-align: ${props.align};
-    `}
+      vertical-align: ${verticalAlign};
+    `};
+
+  ${({ widthPercent }) =>
+    widthPercent &&
+    css`
+      width: ${widthPercent}%;
+    `};
 
   ${props =>
     props.isCheckbox &&
     css`
       width: ${({ theme }) => theme.helpers.addValues(theme.spacing.xLarge, theme.spacing.small)};
       white-space: nowrap;
-    `}
+    `};
 `;
 
 export const StyledTableHeader = styled.th<SharedCellProps>`

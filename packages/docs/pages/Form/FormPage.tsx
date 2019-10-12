@@ -16,13 +16,13 @@ import {
 import React from 'react';
 
 import { Code, CodePreview } from '../../components';
-import {
-  FormErrorPropTable,
-  FormFieldsetPropTable,
-  FormGroupPropTable,
-  FormLabelPropTable,
-  FormPropTable,
-} from '../../PropTables';
+// import {
+//   FormErrorPropTable,
+//   FormFieldsetPropTable,
+//   FormGroupPropTable,
+//   FormLabelPropTable,
+//   FormPropTable,
+// } from '../../PropTables';
 
 export default () => (
   <>
@@ -62,23 +62,23 @@ export default () => (
 
     <H2>Form</H2>
 
-    <FormPropTable />
+    {/* <FormPropTable /> */}
 
     <H2 id="error">Form.Error</H2>
 
-    <FormErrorPropTable />
+    {/* <FormErrorPropTable /> */}
 
     <H2>Form.Fieldset</H2>
 
-    <FormFieldsetPropTable />
+    {/* <FormFieldsetPropTable /> */}
 
     <H2 id="label">Form.Label</H2>
 
-    <FormLabelPropTable />
+    {/* <FormLabelPropTable /> */}
 
     <H2>Form.Group</H2>
 
-    <FormGroupPropTable />
+    {/* <FormGroupPropTable /> */}
 
     <H1>Input Types</H1>
 

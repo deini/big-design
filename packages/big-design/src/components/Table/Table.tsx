@@ -19,8 +19,10 @@ export const Table: React.FC<TableProps> = memo(props => {
   const renderHeaders = () => (
     <Head>
       <Item isSelectable={isSelectable}>
-        {headers.map((header, index) => (
-          <Cell key={getKey(header.key, index)}>{header.content}</Cell>
+        {headers.map(({ content, ...header }, index) => (
+          <Cell {...header} key={getKey(header.key, index)}>
+            {content}
+          </Cell>
         ))}
       </Item>
     </Head>
@@ -46,7 +48,11 @@ export const Table: React.FC<TableProps> = memo(props => {
   );
 
   const renderCells = (cells: TableCell[] = []) => {
-    return cells.map((cell, cellIndex) => <Cell key={getKey(cell.key, cellIndex)}>{cell.content}</Cell>);
+    return cells.map(({ content, ...cell }, cellIndex) => (
+      <Cell {...cell} key={getKey(cell.key, cellIndex)}>
+        {content}
+      </Cell>
+    ));
   };
 
   const handleRowSelect = (row: TableItem, isSelected: boolean) => {

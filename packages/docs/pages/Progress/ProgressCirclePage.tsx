@@ -2,7 +2,7 @@ import { H0, H1, H2, Link, ProgressCircle, Text } from '@bigcommerce/big-design'
 import React from 'react';
 
 import { Code, CodePreview } from '../../components';
-import { ProgressCirclePropTable } from '../../PropTables';
+// import { ProgressCirclePropTable } from '../../PropTables';
 
 export default () => (
   <>
@@ -45,6 +45,6 @@ export default () => (
 
     <H2>ProgressCircle</H2>
 
-    <ProgressCirclePropTable />
+    {/* <ProgressCirclePropTable /> */}
   </>
 );
