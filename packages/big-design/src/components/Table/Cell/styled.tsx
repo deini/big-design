@@ -55,8 +55,8 @@ export const StyledDefaultTableHeader = styled.th<SharedCellProps>`
   color: ${({ theme }) => theme.colors.secondary60};
   white-space: nowrap;
 
-  ${props =>
-    props.stickyHeader &&
+  ${({ stickyHeader }) =>
+    stickyHeader &&
     css`
       position: sticky;
       top: 0;

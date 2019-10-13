@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 import { Checkbox } from '../../Checkbox';
 import { Flex } from '../../Flex';
@@ -15,7 +15,7 @@ export interface ActionsProps {
   tableId: string;
 }
 
-export const Actions: React.FC<ActionsProps> = ({ selectable, pagination, tableId, items = [], ...props }) => {
+export const Actions: React.FC<ActionsProps> = memo(({ selectable, pagination, tableId, items = [], ...props }) => {
   const handleSelectAll = () => {
     if (!selectable) {
       return;
@@ -58,4 +58,4 @@ export const Actions: React.FC<ActionsProps> = ({ selectable, pagination, tableI
       )}
     </StyledActions>
   );
-};
+});

@@ -90,4 +90,4 @@ const getKey = (key: string | number | undefined, fallbackKey: number): string |
   return key === undefined ? fallbackKey : key;
 };
 
-export const TableFigure: React.FC<any> = ({ className, style, ...props }) => <StyledTableFigure {...props} />;
+export const TableFigure: React.FC = memo(props => <StyledTableFigure {...props} />);
