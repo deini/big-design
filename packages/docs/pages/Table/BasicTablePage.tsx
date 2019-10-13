@@ -100,6 +100,7 @@ export default () => {
                 headers={columns}
                 items={currentItems}
                 selectable={{
+                  itemsName: 'Products',
                   onSelectionChange: setSelectedItems,
                   selectedItems,
                 }}

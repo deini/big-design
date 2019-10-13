@@ -3,6 +3,7 @@ import React from 'react';
 import { Checkbox } from '../../Checkbox';
 import { Flex } from '../../Flex';
 import { Pagination } from '../../Pagination';
+import { Text } from '../../Typography';
 import { TableItem, TablePagination, TableSelectable } from '../types';
 
 import { StyledActions } from './styled';
@@ -29,7 +30,7 @@ export const Actions: React.FC<ActionsProps> = ({ selectable, pagination, tableI
     }
   };
 
-  const renderSelectAllAction = ({ selectedItems }: TableSelectable) => {
+  const renderSelectAllAction = ({ itemsName, selectedItems }: TableSelectable) => {
     const totalSelectedItems = selectedItems.length;
     const totalItemsInPage = items.length;
     const isChecked = totalSelectedItems === totalItemsInPage && totalItemsInPage > 0;
@@ -37,8 +38,12 @@ export const Actions: React.FC<ActionsProps> = ({ selectable, pagination, tableI
 
     return (
       <Flex.Item flexGrow={2}>
-        <Checkbox isIndeterminate={isIndeterminate} checked={isChecked} onChange={handleSelectAll} />
-        {totalSelectedItems}/{totalItemsInPage} Products
+        <Flex>
+          <Checkbox isIndeterminate={isIndeterminate} checked={isChecked} onChange={handleSelectAll} />
+          <Text marginLeft="small">
+            {totalSelectedItems}/{totalItemsInPage} {itemsName}
+          </Text>
+        </Flex>
       </Flex.Item>
     );
   };

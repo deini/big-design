@@ -26,10 +26,10 @@ const SharedCellStyles = css<SharedCellProps>`
       vertical-align: ${verticalAlign};
     `};
 
-  ${({ widthPercent }) =>
-    widthPercent &&
+  ${({ width }) =>
+    width !== undefined &&
     css`
-      width: ${widthPercent}%;
+      width: ${typeof width === 'string' ? width : width + 'px'};
     `};
 
   ${props =>
@@ -63,5 +63,10 @@ export const StyledTableCell = styled.td<SharedCellProps>`
   color: ${({ theme }) => theme.colors.secondary70};
 `;
 
+export const StyledVanillaTd = styled.td<SharedCellProps>``;
+export const StyledVanillaTh = styled.th<SharedCellProps>``;
+
 StyledTableHeader.defaultProps = { theme: defaultTheme };
 StyledTableCell.defaultProps = { theme: defaultTheme };
+StyledVanillaTd.defaultProps = { theme: defaultTheme };
+StyledVanillaTh.defaultProps = { theme: defaultTheme };

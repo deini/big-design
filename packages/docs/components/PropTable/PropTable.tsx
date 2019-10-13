@@ -62,7 +62,7 @@ export class PropTable extends React.PureComponent<PropTableProps> {
             { content: 'Prop Name' },
             { content: 'Type' },
             { content: 'Default' },
-            { content: 'Description', widthPercent: 50 },
+            { content: 'Description', width: '50%' },
           ]}
           items={items}
         />

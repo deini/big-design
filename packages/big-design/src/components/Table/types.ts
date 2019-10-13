@@ -7,7 +7,7 @@ export interface TableCell {
   content: React.ReactNode;
   key?: string | number;
   verticalAlign?: 'top' | 'center';
-  widthPercent?: number;
+  width?: number | string;
 }
 
 export interface TableItem {
@@ -16,8 +16,9 @@ export interface TableItem {
 }
 
 export interface TableSelectable {
-  selectedItems: TableItem[];
+  itemsName?: string;
   onSelectionChange: any; // puse any pq el example llora por ts
+  selectedItems: TableItem[];
 }
 
 export type TablePagination = Omit<PaginationProps, keyof MarginProps>;
