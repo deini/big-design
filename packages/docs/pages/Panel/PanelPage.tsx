@@ -2,7 +2,7 @@ import { Button, Flex, H0, H1, H2, Link, Panel, Text } from '@bigcommerce/big-de
 import React from 'react';
 
 import { CodePreview, Collapsible } from '../../components';
-// import { BoxPropTable, MarginPropTable, PanelPropTable } from '../../PropTables';
+import { BoxPropTable, MarginPropTable, PanelPropTable } from '../../PropTables';
 
 export default () => (
   <>
@@ -49,12 +49,12 @@ export default () => (
 
     <H2>Panel</H2>
 
-    {/* <PanelPropTable />
+    <PanelPropTable />
 
     <H2>Inherited Props</H2>
 
     <Collapsible title="Margin Props">
       <MarginPropTable />
-    </Collapsible> */}
+    </Collapsible>
   </>
 );

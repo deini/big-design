@@ -2,12 +2,12 @@ import { Form, H0, H1, H2, Link, Text, Textarea } from '@bigcommerce/big-design'
 import React from 'react';
 
 import { Code, CodePreview } from '../../components';
-// import {
-//   TextareaDescriptionPropTable,
-//   TextareaErrorPropTable,
-//   TextareaLabelPropTable,
-//   TextareaPropTable,
-// } from '../../PropTables';
+import {
+  TextareaDescriptionPropTable,
+  TextareaErrorPropTable,
+  TextareaLabelPropTable,
+  TextareaPropTable,
+} from '../../PropTables';
 
 export default () => (
   <>
@@ -53,7 +53,7 @@ export default () => (
       Supports all native <Code>&lt;textarea /&gt;</Code> element attributes.
     </Text>
 
-    {/* <TextareaPropTable />
+    <TextareaPropTable />
 
     <H2>Textarea.Description</H2>
 
@@ -65,7 +65,7 @@ export default () => (
 
     <H2>Textarea.Label</H2>
 
-    <TextareaLabelPropTable /> */}
+    <TextareaLabelPropTable />
 
     <H1>Error State</H1>
 

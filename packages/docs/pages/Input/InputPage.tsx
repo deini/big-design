@@ -3,7 +3,7 @@ import { CheckCircleIcon } from '@bigcommerce/big-design-icons';
 import React from 'react';
 
 import { Code, CodePreview } from '../../components';
-// import { InputDescriptionPropTable, InputErrorPropTable, InputLabelPropTable, InputPropTable } from '../../PropTables';
+import { InputDescriptionPropTable, InputErrorPropTable, InputLabelPropTable, InputPropTable } from '../../PropTables';
 
 export default () => (
   <>
@@ -48,7 +48,7 @@ export default () => (
       Supports all native <Code>&lt;input /&gt;</Code> element attributes.
     </Text>
 
-    {/* <InputPropTable />
+    <InputPropTable />
 
     <H2>Input.Description</H2>
 
@@ -60,7 +60,7 @@ export default () => (
 
     <H2>Input.Label</H2>
 
-    <InputLabelPropTable /> */}
+    <InputLabelPropTable />
 
     <H1>Error State</H1>
 

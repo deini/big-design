@@ -2,7 +2,7 @@ import { Box, H0, H1, Text } from '@bigcommerce/big-design';
 import React from 'react';
 
 import { CodePreview, NextLink } from '../../components';
-// import { PaddingPropTable } from '../../PropTables';
+import { PaddingPropTable } from '../../PropTables';
 
 export default () => (
   <>
@@ -47,6 +47,6 @@ export default () => (
 
     <H1>API</H1>
 
-    {/* <PaddingPropTable /> */}
+    <PaddingPropTable />
   </>
 );

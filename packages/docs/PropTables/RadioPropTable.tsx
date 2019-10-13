@@ -7,7 +7,7 @@ const props: Prop[] = [
     name: 'label',
     types: 'ReactChild',
     required: true,
-    description: () => (
+    description: (
       <>
         Label to display next to a <Code>Radio</Code> component.
       </>

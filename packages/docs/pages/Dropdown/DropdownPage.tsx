@@ -2,7 +2,7 @@ import { Button, Dropdown, Grid, H0, H1, H2, Link, Panel, Text } from '@bigcomme
 import React from 'react';
 
 import { Code, CodePreview } from '../../components';
-// import { DropdownItemPropTable, DropdownPropTable } from '../../PropTables';
+import { DropdownItemPropTable, DropdownPropTable } from '../../PropTables';
 
 export default () => (
   <>
@@ -42,11 +42,11 @@ export default () => (
 
     <H2>Dropdown</H2>
 
-    {/* <DropdownPropTable /> */}
+    <DropdownPropTable />
 
     <H2>Dropdown.Item</H2>
 
-    {/* <DropdownItemPropTable /> */}
+    <DropdownItemPropTable />
 
     <H1>Examples</H1>
 

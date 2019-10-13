@@ -2,7 +2,7 @@ import { Box, Flex, H0, H1, H2, Text } from '@bigcommerce/big-design';
 import React from 'react';
 
 import { Code, CodePreview, Collapsible } from '../../components';
-// import { BoxPropTable, FlexItemPropTable, FlexPropTable, MarginPropTable, PaddingPropTable } from '../../PropTables';
+import { BoxPropTable, FlexItemPropTable, FlexPropTable, MarginPropTable, PaddingPropTable } from '../../PropTables';
 
 const ExampleBox: React.FC<{ vertical?: boolean }> = ({ children, vertical }) => (
   <Box
@@ -51,24 +51,24 @@ export default () => (
 
     <H2>Flex</H2>
 
-    {/* <FlexPropTable /> */}
+    <FlexPropTable />
 
     <H2>Flex.Item</H2>
 
-    {/* <FlexItemPropTable /> */}
+    <FlexItemPropTable />
 
     <H2>Inherited Props</H2>
 
     <Collapsible title="Box Props">
-      {/* <BoxPropTable /> */}
+      <BoxPropTable />
     </Collapsible>
 
     <Collapsible title="Margin Props">
-      {/* <MarginPropTable /> */}
+      <MarginPropTable />
     </Collapsible>
 
     <Collapsible title="Padding Props">
-      {/* <PaddingPropTable /> */}
+      <PaddingPropTable />
     </Collapsible>
 
     <H1>Examples</H1>

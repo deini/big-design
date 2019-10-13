@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Code, PropTable, Prop } from '../components';
+import { Code, Prop, PropTable } from '../components';
 
 const selectProps: Prop[] = [
   {
@@ -17,7 +17,7 @@ const selectProps: Prop[] = [
     name: 'maxHeight',
     types: 'number',
     defaultValue: '250',
-    description: () => (
+    description: (
       <>
         Sets a <Code>max-height</Code> to the dropdown.
       </>
@@ -49,7 +49,7 @@ const selectProps: Prop[] = [
     name: 'positionFixed',
     defaultValue: 'false',
     types: 'boolean',
-    description: () => (
+    description: (
       <>
         If set, uses <Code>position: fixed</Code> instead of <Code>position: absolute</Code> to position the items.
       </>
@@ -88,7 +88,7 @@ const selectProps: Prop[] = [
   },
 ];
 
-export const SelectPropTable: React.FC = () => <PropTable propsList={selectProps} />;
+export const SelectPropTable: React.FC = () => <PropTable propList={selectProps} />;
 
 const selectOptionProps: Prop[] = [
   {
@@ -98,4 +98,4 @@ const selectOptionProps: Prop[] = [
   },
 ];
 
-export const SelectOptionPropTable: React.FC = () => <PropTable propsList={selectOptionProps} />;
+export const SelectOptionPropTable: React.FC = () => <PropTable propList={selectOptionProps} />;

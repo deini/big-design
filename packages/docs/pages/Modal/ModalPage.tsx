@@ -2,7 +2,7 @@ import { Button, H0, H1, H2, Link, Modal, Text } from '@bigcommerce/big-design';
 import React from 'react';
 
 import { Code, CodePreview } from '../../components';
-// import { ModalActionsPropTable, ModalHeaderPropTable, ModalPropTable } from '../../PropTables';
+import { ModalActionsPropTable, ModalHeaderPropTable, ModalPropTable } from '../../PropTables';
 
 export default () => (
   <>
@@ -108,7 +108,7 @@ export default () => (
 
     <H2>Modal</H2>
 
-    {/* <ModalPropTable />
+    <ModalPropTable />
 
     <H2>Modal.Header</H2>
 
@@ -116,6 +116,6 @@ export default () => (
 
     <H2>Modal.Actions</H2>
 
-    <ModalActionsPropTable /> */}
+    <ModalActionsPropTable />
   </>
 );

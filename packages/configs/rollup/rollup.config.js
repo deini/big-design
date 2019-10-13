@@ -20,7 +20,7 @@ function generateConfig(pkg) {
   return {
     input: 'src/index.ts',
     output: [
-      !isDev && { file: pkg.main, format: 'cjs', sourcemap: true },
+      { file: pkg.main, format: 'cjs', sourcemap: true },
       { file: pkg.module, format: 'es', sourcemap: true }
     ].filter(Boolean),
     external: makeExternalPredicate(externals),

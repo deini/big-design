@@ -3,7 +3,7 @@ import { WarningIcon } from '@bigcommerce/big-design-icons';
 import React from 'react';
 
 import { Code, CodePreview } from '../../components';
-// import { TooltipPropTable } from '../../PropTables';
+import { TooltipPropTable } from '../../PropTables';
 
 export default () => (
   <>
@@ -30,7 +30,7 @@ export default () => (
 
     <H2>Tooltip</H2>
 
-    {/* <TooltipPropTable /> */}
+    <TooltipPropTable />
 
     <H1>Examples</H1>
 

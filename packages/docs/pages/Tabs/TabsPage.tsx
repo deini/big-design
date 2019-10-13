@@ -2,7 +2,7 @@ import { Box, H0, H1, H2, Link, Tabs, Text } from '@bigcommerce/big-design';
 import React from 'react';
 
 import { Code, CodePreview } from '../../components';
-// import { TabsPropTable, TabPropTable } from '../../PropTables';
+import { TabsPropTable, TabPropTable } from '../../PropTables';
 
 export default () => (
   <>
@@ -48,10 +48,10 @@ export default () => (
 
     <H2>Tabs</H2>
 
-    {/* <TabsPropTable />
+    <TabsPropTable />
 
     <H2>Tabs.Tab</H2>
 
-    <TabPropTable /> */}
+    <TabPropTable />
   </>
 );
