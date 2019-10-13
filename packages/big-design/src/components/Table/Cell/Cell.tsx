@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { TableContext, TableSectionContext } from '../context';
 import { TableCell } from '../types';
 
-import { StyledTableCell, StyledTableHeader, StyledVanillaTd, StyledVanillaTh } from './styled';
+import { StyledCustomTableCell, StyledCustomTableHead, StyledDefaultTableCell, StyledDefaultTableHeader } from './styled';
 
 export interface CellProps extends React.TableHTMLAttributes<HTMLTableCellElement>, Omit<TableCell, 'content'> {
   isCheckbox?: boolean;
@@ -12,21 +12,21 @@ export interface CellProps extends React.TableHTMLAttributes<HTMLTableCellElemen
 export const Cell: React.FC<CellProps> = ({ children, ...props }) => {
   const tableContext = useContext(TableContext);
   const tableSectionContext = useContext(TableSectionContext);
-  const renderStyledCell = typeof children === 'string' || props.isCheckbox;
+  const renderStyledCell = typeof children === 'string' || typeof children === 'number' || props.isCheckbox;
 
   if (tableSectionContext === 'thead') {
     return renderStyledCell ? (
-      <StyledTableHeader stickyHeader={tableContext.stickyHeader} {...props}>
+      <StyledDefaultTableHeader stickyHeader={tableContext.stickyHeader} {...props}>
         {children}
-      </StyledTableHeader>
+      </StyledDefaultTableHeader>
     ) : (
-      <StyledVanillaTh {...props}>{children}</StyledVanillaTh>
+      <StyledCustomTableHead {...props}>{children}</StyledCustomTableHead>
     );
   }
 
   return renderStyledCell ? (
-    <StyledTableCell {...props}>{children}</StyledTableCell>
+    <StyledDefaultTableCell {...props}>{children}</StyledDefaultTableCell>
   ) : (
-    <StyledVanillaTd {...props}>{children}</StyledVanillaTd>
+    <StyledCustomTableCell {...props}>{children}</StyledCustomTableCell>
   );
 };

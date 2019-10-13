@@ -1,30 +1,16 @@
 import { Flex, H0, H1, H2, Pagination, Table } from '@bigcommerce/big-design';
+import { TableItem } from '@bigcommerce/big-design/dist/src/components/Table/types';
 import React from 'react';
 
 import { CodePreview } from '../../components';
 // import { TableActionsPropTable, TableBodyPropTable, TableCellPropTable, TablePropTable } from '../../PropTables';
 
-interface Data {
-  sku: string;
-  name: string;
-  price: number;
-}
-
-// function createData(sku, name, price): Data {
-function createData(sku, name, price) {
-  // return { sku, name, price };
+function createData(sku, name, price): TableItem {
   return {
-    cells: [
-      { content: sku },
-      { content: name },
-      {
-        content: <h1>{price}</h1>,
-      },
-    ],
+    cells: [{ content: sku }, { content: name }, { content: price, align: 'right' }],
   };
 }
 
-// const data: Data[] = [
 const data = [
   createData('SM13', '[Sample] Smith Journal 13', 25),
   createData('DPB', '[Sample] Dustpan & Brush', 34.95),
@@ -41,33 +27,14 @@ const data = [
   createData('SLCTBS', '[Sample] Fog Linen Chambray Towel - Beige Stripe with some fondu of some sort', 49),
 ];
 
-// const columns: Array<{
-//   id: string;
-//   label: string;
-//   minWidth?: number;
-//   align?: 'left' | 'center' | 'right';
-//   format?(value): string;
-// }> = [
-//   { id: 'sku', label: 'Product SKU', minWidth: 124 },
-//   { id: 'name', label: 'Product Name', minWidth: 120 },
-//   { id: 'price', label: 'Price', align: 'right', format: value => `$${value.toFixed(2)}` },
-// ];
-const columns = [{ content: 'Sku' }, { content: 'Name' }, { content: 'Price' }];
+const headers = [{ content: 'Sku' }, { content: 'Name' }, { content: 'Price' }];
 
 export default () => {
   return (
     <>
       <H0>Table</H0>
 
-      {/* <Text>
-        Intro text.
-        <Link href="https://design.bigcommerce.com/components" target="_blank">
-          Design Guidelines
-        </Link>
-        .
-      </Text> */}
-
-      <CodePreview scope={{ data, columns }}>
+      <CodePreview scope={{ data, headers }}>
         {/* jsx-to-string:start */}
         {function Example() {
           const [items] = React.useState(data);
@@ -97,7 +64,7 @@ export default () => {
             <>
               <Table
                 stickyHeader
-                headers={columns}
+                headers={headers}
                 items={currentItems}
                 selectable={{
                   itemsName: 'Products',
@@ -109,7 +76,7 @@ export default () => {
                   totalItems: items.length,
                   onPageChange: setPage,
                   itemsPerPageOptions: ranges,
-                  onItemsPerPageChange: setRange,
+                  onItemsPerPageChange,
                   itemsPerPage: range,
                 }}
               />
