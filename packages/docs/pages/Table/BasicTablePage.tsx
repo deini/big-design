@@ -1,38 +1,52 @@
-import { Flex, H0, H1, H2, Pagination, Table } from '@bigcommerce/big-design';
+import { H0, H1, H2, Table } from '@bigcommerce/big-design';
 import { TableItem } from '@bigcommerce/big-design/dist/src/components/Table/types';
 import React from 'react';
 
 import { CodePreview } from '../../components';
-// import { TableActionsPropTable, TableBodyPropTable, TableCellPropTable, TablePropTable } from '../../PropTables';
 
-function createData(sku, name, price): TableItem {
+function createData(sku, name, stock): TableItem {
   return {
-    cells: [{ content: sku }, { content: name }, { content: price, align: 'right' }],
+    cells: [{ content: sku }, { content: name }, { content: stock }],
   };
 }
 
 const data = [
   createData('SM13', '[Sample] Smith Journal 13', 25),
-  createData('DPB', '[Sample] Dustpan & Brush', 34.95),
-  createData('OFSUC', '[Sample] Utility Caddy', 45.95),
-  createData('CLC', '[Sample] Canvas Laundry Cart', 200),
-  createData('CGLD', '[Sample] Laundry Detergent', 29.95),
-  createData('TWB', '[Sample] Tiered Wire Basket', 119.95),
-  createData('OCG', '[Sample] Oak Cheese Grater', 34.95),
+  createData('DPB', '[Sample] Dustpan & Brush', 34),
+  createData('OFSUC', '[Sample] Utility Caddy', 45),
+  createData('CLC', '[Sample] Canvas Laundry Cart', 2),
+  createData('CGLD', '[Sample] Laundry Detergent', 29),
+  createData('TWB', '[Sample] Tiered Wire Basket', 119),
+  createData('OCG', '[Sample] Oak Cheese Grater', 34),
   createData('SLLPJ', '[Sample] 1 L Le Parfait Jar', 7),
-  createData('CC3C', '[Sample] Chemex Coffeemaker 3 cup', 49.5),
+  createData('CC3C', '[Sample] Chemex Coffeemaker 3 cup', 49),
   createData('ABS', '[Sample] Able Brewing System', 225),
   createData('OTS', '[Sample] Orbit Terrarium - Small', 89),
   createData('OTL', '[Sample] Orbit Terrarium - Large', 109),
   createData('SLCTBS', '[Sample] Fog Linen Chambray Towel - Beige Stripe with some fondu of some sort', 49),
 ];
 
-const headers = [{ content: 'Sku' }, { content: 'Name' }, { content: 'Price' }];
+const headers = [{ content: 'Sku' }, { content: 'Name' }, { content: 'Stock' }];
 
 export default () => {
   return (
     <>
       <H0>Table</H0>
+
+      <CodePreview scope={{ data, headers }}>
+        {/* jsx-to-string:start */}
+        <Table
+          headers={[{ content: 'Sku' }, { content: 'Name' }, { content: 'Stock' }]}
+          items={[
+            { cells: [{ content: 'MISK' }, { content: '[Sample] Smith Journal 13' }, { content: 25 }] },
+            { cells: [{ content: 'CILO' }, { content: '[Sample] Dustpan & Brush' }, { content: 34 }] },
+            { cells: [{ content: 'WICP' }, { content: '[Sample] Utility Caddy' }, { content: 45 }] },
+            { cells: [{ content: 'CHUA' }, { content: '[Sample] Canvas Laundry Cart' }, { content: 2 }] },
+            { cells: [{ content: 'MONK' }, { content: '[Sample] Laundry Detergent' }, { content: 29 }] },
+          ]}
+        />
+        {/* jsx-to-string:end */}
+      </CodePreview>
 
       <CodePreview scope={{ data, headers }}>
         {/* jsx-to-string:start */}
@@ -61,26 +75,25 @@ export default () => {
           const [selectedItems, setSelectedItems] = React.useState([]);
 
           return (
-            <>
-              <Table
-                stickyHeader
-                headers={headers}
-                items={currentItems}
-                selectable={{
-                  itemsName: 'Products',
-                  onSelectionChange: setSelectedItems,
-                  selectedItems,
-                }}
-                pagination={{
-                  currentPage: page,
-                  totalItems: items.length,
-                  onPageChange: setPage,
-                  itemsPerPageOptions: ranges,
-                  onItemsPerPageChange,
-                  itemsPerPage: range,
-                }}
-              />
-            </>
+            <Table
+              stickyHeader
+              headers={headers}
+              items={currentItems}
+              // @ts-ignore
+              selectable={{
+                itemsName: 'Products',
+                onSelectionChange: setSelectedItems,
+                selectedItems,
+              }}
+              pagination={{
+                currentPage: page,
+                totalItems: items.length,
+                onPageChange: setPage,
+                itemsPerPageOptions: ranges,
+                onItemsPerPageChange,
+                itemsPerPage: range,
+              }}
+            />
           );
         }}
         {/* jsx-to-string:end */}

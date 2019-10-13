@@ -17,8 +17,8 @@ export interface TableItem {
 
 export interface TableSelectable {
   itemsName?: string;
-  onSelectionChange: any; // puse any pq el example llora por ts
   selectedItems: TableItem[];
+  onSelectionChange(selectedItems: TableItem[]): void;
 }
 
 export type TablePagination = Omit<PaginationProps, keyof MarginProps>;

@@ -17,10 +17,10 @@ export interface CellProps extends React.TableHTMLAttributes<HTMLTableCellElemen
 export const Cell: React.FC<CellProps> = memo(({ children, ...props }) => {
   const tableContext = useContext(TableContext);
   const tableSectionContext = useContext(TableSectionContext);
-  const renderStyledCell = typeof children === 'string' || typeof children === 'number' || props.isCheckbox;
+  const renderDefaultCell = typeof children === 'string' || typeof children === 'number' || props.isCheckbox;
 
   const renderHeader = () => {
-    return renderStyledCell ? (
+    return renderDefaultCell ? (
       <StyledDefaultTableHeader stickyHeader={tableContext.stickyHeader} {...props}>
         {children}
       </StyledDefaultTableHeader>
@@ -30,7 +30,7 @@ export const Cell: React.FC<CellProps> = memo(({ children, ...props }) => {
   };
 
   const renderData = () => {
-    return renderStyledCell ? (
+    return renderDefaultCell ? (
       <StyledDefaultTableCell {...props}>{children}</StyledDefaultTableCell>
     ) : (
       <StyledCustomTableCell {...props}>{children}</StyledCustomTableCell>
