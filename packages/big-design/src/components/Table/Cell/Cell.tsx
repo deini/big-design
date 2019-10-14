@@ -1,39 +1,38 @@
 import React, { memo, useContext } from 'react';
 
 import { TableContext, TableSectionContext } from '../context';
-import { TableCell } from '../types';
 
-import {
-  StyledCustomTableCell,
-  StyledCustomTableHead,
-  StyledDefaultTableCell,
-  StyledDefaultTableHeader,
-} from './styled';
+import { StyledTableData, StyledTableHeader } from './styled';
 
-export interface CellProps extends React.TableHTMLAttributes<HTMLTableCellElement>, Omit<TableCell, 'content'> {
+export interface CellProps extends React.TableHTMLAttributes<HTMLTableCellElement> {
+  align?: 'left' | 'center' | 'right';
   isCheckbox?: boolean;
+  verticalAlign?: 'top' | 'center';
+  width?: number | string;
 }
 
-export const Cell: React.FC<CellProps> = memo(({ children, ...props }) => {
+export const Cell: React.FC<CellProps> = memo(({ align, children, isCheckbox, verticalAlign, width }: CellProps) => {
   const tableContext = useContext(TableContext);
   const tableSectionContext = useContext(TableSectionContext);
-  const renderDefaultCell = typeof children === 'string' || typeof children === 'number' || props.isCheckbox;
 
   const renderHeader = () => {
-    return renderDefaultCell ? (
-      <StyledDefaultTableHeader stickyHeader={tableContext.stickyHeader} {...props}>
+    return (
+      <StyledTableHeader
+        stickyHeader={tableContext.stickyHeader}
+        align={align}
+        isCheckbox={isCheckbox}
+        width={width}
+      >
         {children}
-      </StyledDefaultTableHeader>
-    ) : (
-      <StyledCustomTableHead {...props}>{children}</StyledCustomTableHead>
+      </StyledTableHeader>
     );
   };
 
   const renderData = () => {
-    return renderDefaultCell ? (
-      <StyledDefaultTableCell {...props}>{children}</StyledDefaultTableCell>
-    ) : (
-      <StyledCustomTableCell {...props}>{children}</StyledCustomTableCell>
+    return (
+      <StyledTableData align={align} isCheckbox={isCheckbox} verticalAlign={verticalAlign} width={width}>
+        {children}
+      </StyledTableData>
     );
   };
 

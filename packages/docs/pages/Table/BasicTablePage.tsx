@@ -1,54 +1,84 @@
 import { H0, H1, H2, Table } from '@bigcommerce/big-design';
-import { TableItem } from '@bigcommerce/big-design/dist/src/components/Table/types';
+import { TableColumn, TableItem } from '@bigcommerce/big-design/dist/src/components/Table/types';
 import React from 'react';
 
 import { CodePreview } from '../../components';
 
-function createData(sku, name, stock): TableItem {
-  return {
-    cells: [{ content: sku }, { content: name }, { content: stock }],
-  };
+interface Item {
+  sku: string;
+  name: string;
+  stock: number;
 }
 
-const data = [
-  createData('SM13', '[Sample] Smith Journal 13', 25),
-  createData('DPB', '[Sample] Dustpan & Brush', 34),
-  createData('OFSUC', '[Sample] Utility Caddy', 45),
-  createData('CLC', '[Sample] Canvas Laundry Cart', 2),
-  createData('CGLD', '[Sample] Laundry Detergent', 29),
-  createData('TWB', '[Sample] Tiered Wire Basket', 119),
-  createData('OCG', '[Sample] Oak Cheese Grater', 34),
-  createData('SLLPJ', '[Sample] 1 L Le Parfait Jar', 7),
-  createData('CC3C', '[Sample] Chemex Coffeemaker 3 cup', 49),
-  createData('ABS', '[Sample] Able Brewing System', 225),
-  createData('OTS', '[Sample] Orbit Terrarium - Small', 89),
-  createData('OTL', '[Sample] Orbit Terrarium - Large', 109),
-  createData('SLCTBS', '[Sample] Fog Linen Chambray Towel - Beige Stripe with some fondu of some sort', 49),
+const data: Item[] = [
+  { sku: 'SM13', name: '[Sample] Smith Journal 13', stock: 25 },
+  { sku: 'DPB', name: '[Sample] Dustpan & Brush', stock: 34 },
+  { sku: 'OFSUC', name: '[Sample] Utility Caddy', stock: 45 },
+  { sku: 'CLC', name: '[Sample] Canvas Laundry Cart', stock: 2 },
+  { sku: 'CGLD', name: '[Sample] Laundry Detergent', stock: 29 },
+  { sku: 'TWB', name: '[Sample] Tiered Wire Basket', stock: 119 },
+  { sku: 'OCG', name: '[Sample] Oak Cheese Grater', stock: 34 },
+  { sku: 'SLLPJ', name: '[Sample] 1 L Le Parfait Jar', stock: 7 },
+  { sku: 'CC3C', name: '[Sample] Chemex Coffeemaker 3 cup', stock: 49 },
+  { sku: 'ABS', name: '[Sample] Able Brewing System', stock: 225 },
+  { sku: 'OTS', name: '[Sample] Orbit Terrarium - Small', stock: 89 },
+  { sku: 'OTL', name: '[Sample] Orbit Terrarium - Large', stock: 109 },
+  { sku: 'SLCTBS', name: '[Sample] Fog Linen Chambray Towel - Beige Stripe with some fondu of some sort', stock: 49 },
 ];
 
-const headers = [{ content: 'Sku' }, { content: 'Name' }, { content: 'Stock' }];
+const Rng: React.FC<Item> = ({ sku }) => <>{sku}</>;
+
+const columns = [
+  {
+    header: 'Sku',
+    Cell: ({ sku }) => sku,
+  },
+  {
+    header: 'Name',
+    Cell: ({ name }) => name,
+  },
+  {
+    header: 'Stock',
+    Cell: ({ stock }) => stock,
+  },
+];
 
 export default () => {
   return (
     <>
       <H0>Table</H0>
 
-      <CodePreview scope={{ data, headers }}>
+      <CodePreview scope={{ data }}>
         {/* jsx-to-string:start */}
         <Table
-          headers={[{ content: 'Sku' }, { content: 'Name' }, { content: 'Stock' }]}
-          items={[
-            { cells: [{ content: 'MISK' }, { content: '[Sample] Smith Journal 13' }, { content: 25 }] },
-            { cells: [{ content: 'CILO' }, { content: '[Sample] Dustpan & Brush' }, { content: 34 }] },
-            { cells: [{ content: 'WICP' }, { content: '[Sample] Utility Caddy' }, { content: 45 }] },
-            { cells: [{ content: 'CHUA' }, { content: '[Sample] Canvas Laundry Cart' }, { content: 2 }] },
-            { cells: [{ content: 'MONK' }, { content: '[Sample] Laundry Detergent' }, { content: 29 }] },
+          columns={[
+            {
+              header: 'Sku',
+              // Cell: ({ sku }) => sku,
+              Cell: (props) => props.sku,
+            },
+            {
+              header: 'Name',
+              Cell: ({ name }) => name,
+            },
+            {
+              header: 'Stock',
+              Cell: ({ stock }) => stock,
+            },
           ]}
+          data={data}
+          // data={[
+          //   { sku: 'SM13', name: '[Sample] Smith Journal 13', stock: 25 },
+          //   { sku: 'DPB', name: '[Sample] Dustpan & Brush', stock: 34 },
+          //   { sku: 'OFSUC', name: '[Sample] Utility Caddy', stock: 45 },
+          //   { sku: 'CLC', name: '[Sample] Canvas Laundry Cart', stock: 2 },
+          //   { sku: 'CGLD', name: '[Sample] Laundry Detergent', stock: 29 },
+          // ]}
         />
         {/* jsx-to-string:end */}
       </CodePreview>
 
-      <CodePreview scope={{ data, headers }}>
+      <CodePreview scope={{ data, columns }}>
         {/* jsx-to-string:start */}
         {function Example() {
           const [items] = React.useState(data);
@@ -77,8 +107,8 @@ export default () => {
           return (
             <Table
               stickyHeader
-              headers={headers}
-              items={currentItems}
+              columns={columns}
+              data={currentItems}
               // @ts-ignore
               selectable={{
                 itemsName: 'Products',

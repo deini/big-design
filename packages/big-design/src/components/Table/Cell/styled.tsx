@@ -7,9 +7,10 @@ interface SharedCellProps extends CellProps {
   stickyHeader?: boolean;
 }
 
-// Applied to all cells
 const SharedCellStyles = css<SharedCellProps>`
   box-sizing: border-box;
+  font-size: ${({ theme }) => theme.typography.fontSize.medium};
+  padding: ${({ theme }) => theme.spacing.small};
 
   ${({ align }) =>
     align &&
@@ -28,14 +29,6 @@ const SharedCellStyles = css<SharedCellProps>`
     css`
       width: ${typeof width === 'string' ? width : width + 'px'};
     `};
-`;
-
-// Applied to all default cells (used when passing content as string)
-const SharedDefaultCellStyles = css<SharedCellProps>`
-  font-size: ${({ theme }) => theme.typography.fontSize.medium};
-  line-height: ${({ theme }) => theme.lineHeight.small};
-  min-height: ${({ theme }) => theme.spacing.xxxLarge};
-  padding: ${({ theme }) => theme.spacing.small};
 
   ${props =>
     props.isCheckbox &&
@@ -45,9 +38,8 @@ const SharedDefaultCellStyles = css<SharedCellProps>`
     `};
 `;
 
-export const StyledDefaultTableHeader = styled.th<SharedCellProps>`
+export const StyledTableHeader = styled.th<SharedCellProps>`
   ${SharedCellStyles}
-  ${SharedDefaultCellStyles}
 
   background-color: ${({ theme }) => theme.colors.secondary10};
   box-shadow: ${({ theme }) =>
@@ -63,21 +55,11 @@ export const StyledDefaultTableHeader = styled.th<SharedCellProps>`
     `}
 `;
 
-export const StyledDefaultTableCell = styled.td<SharedCellProps>`
+export const StyledTableData = styled.td<SharedCellProps>`
   ${SharedCellStyles}
-  ${SharedDefaultCellStyles}
 
   color: ${({ theme }) => theme.colors.secondary70};
 `;
 
-export const StyledCustomTableCell = styled.td<SharedCellProps>`
-  ${SharedCellStyles}
-`;
-export const StyledCustomTableHead = styled.th<SharedCellProps>`
-  ${SharedCellStyles}
-`;
-
-StyledDefaultTableHeader.defaultProps = { theme: defaultTheme };
-StyledDefaultTableCell.defaultProps = { theme: defaultTheme };
-StyledCustomTableCell.defaultProps = { theme: defaultTheme };
-StyledCustomTableHead.defaultProps = { theme: defaultTheme };
+StyledTableHeader.defaultProps = { theme: defaultTheme };
+StyledTableData.defaultProps = { theme: defaultTheme };

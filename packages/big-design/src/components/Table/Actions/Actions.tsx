@@ -8,54 +8,56 @@ import { TableItem, TablePagination, TableSelectable } from '../types';
 
 import { StyledActions } from './styled';
 
-export interface ActionsProps {
-  items: TableItem[];
+export interface ActionsProps<T extends TableItem> {
+  items: T[];
   pagination?: TablePagination;
-  selectable?: TableSelectable;
+  selectable?: TableSelectable<T>;
   tableId: string;
 }
 
-export const Actions: React.FC<ActionsProps> = memo(({ selectable, pagination, tableId, items = [], ...props }) => {
-  const handleSelectAll = () => {
-    if (!selectable) {
-      return;
-    }
+export const Actions = memo(
+  <T extends TableItem>({ selectable, pagination, tableId, items = [], ...props }: ActionsProps<T>) => {
+    const handleSelectAll = () => {
+      if (!selectable) {
+        return;
+      }
 
-    const { selectedItems, onSelectionChange } = selectable;
+      const { selectedItems, onSelectionChange } = selectable;
 
-    if (selectedItems.length > 0) {
-      onSelectionChange([]);
-    } else {
-      onSelectionChange([...items]);
-    }
-  };
+      if (selectedItems.length > 0) {
+        onSelectionChange([]);
+      } else {
+        onSelectionChange([...items]);
+      }
+    };
 
-  const renderSelectAllAction = ({ itemsName, selectedItems }: TableSelectable) => {
-    const totalSelectedItems = selectedItems.length;
-    const totalItemsInPage = items.length;
-    const isChecked = totalSelectedItems === totalItemsInPage && totalItemsInPage > 0;
-    const isIndeterminate = totalSelectedItems > 0 && totalSelectedItems !== totalItemsInPage;
+    const renderSelectAllAction = ({ itemsName, selectedItems }: TableSelectable<T>) => {
+      const totalSelectedItems = selectedItems.length;
+      const totalItemsInPage = items.length;
+      const isChecked = totalSelectedItems === totalItemsInPage && totalItemsInPage > 0;
+      const isIndeterminate = totalSelectedItems > 0 && totalSelectedItems !== totalItemsInPage;
+
+      return (
+        <Flex.Item flexGrow={2}>
+          <Flex>
+            <Checkbox isIndeterminate={isIndeterminate} checked={isChecked} onChange={handleSelectAll} />
+            <Text marginLeft="small">
+              {totalSelectedItems}/{totalItemsInPage} {itemsName}
+            </Text>
+          </Flex>
+        </Flex.Item>
+      );
+    };
 
     return (
-      <Flex.Item flexGrow={2}>
-        <Flex>
-          <Checkbox isIndeterminate={isIndeterminate} checked={isChecked} onChange={handleSelectAll} />
-          <Text marginLeft="small">
-            {totalSelectedItems}/{totalItemsInPage} {itemsName}
-          </Text>
-        </Flex>
-      </Flex.Item>
+      <StyledActions alignItems="center" aria-controls={tableId} justifyContent="stretch" padding="small" {...props}>
+        {selectable && renderSelectAllAction(selectable)}
+        {pagination && (
+          <Flex.Item style={{ marginLeft: 'auto' }}>
+            <Pagination {...pagination} />
+          </Flex.Item>
+        )}
+      </StyledActions>
     );
-  };
-
-  return (
-    <StyledActions alignItems="center" aria-controls={tableId} justifyContent="stretch" padding="small" {...props}>
-      {selectable && renderSelectAllAction(selectable)}
-      {pagination && (
-        <Flex.Item style={{ marginLeft: 'auto' }}>
-          <Pagination {...pagination} />
-        </Flex.Item>
-      )}
-    </StyledActions>
-  );
-});
+  },
+);
