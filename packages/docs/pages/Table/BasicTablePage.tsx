@@ -29,15 +29,15 @@ const data: Item[] = [
 const columns = [
   {
     header: 'Sku',
-    Cell: ({ sku }) => sku,
+    render: ({ sku }) => sku,
   },
   {
     header: 'Name',
-    Cell: ({ name }) => name,
+    render: ({ name }) => name,
   },
   {
     header: 'Stock',
-    Cell: ({ stock }) => stock,
+    render: ({ stock }) => stock,
   },
 ];
 
@@ -53,20 +53,20 @@ export default () => {
             {
               header: 'Sku',
               // @ts-ignore
-              Cell: ({ sku }) => sku,
+              render: ({ sku }) => sku,
             },
             {
               header: 'Name',
               // @ts-ignore
-              Cell: ({ name }) => name,
+              render: ({ name }) => name,
             },
             {
               header: 'Stock',
               // @ts-ignore
-              Cell: ({ stock }) => stock,
+              render: ({ stock }) => stock,
             },
           ]}
-          data={[
+          items={[
             { sku: 'SM13', name: '[Sample] Smith Journal 13', stock: 25 },
             { sku: 'DPB', name: '[Sample] Dustpan & Brush', stock: 34 },
             { sku: 'OFSUC', name: '[Sample] Utility Caddy', stock: 45 },
@@ -107,7 +107,7 @@ export default () => {
             <Table
               stickyHeader
               columns={columns}
-              data={currentItems}
+              items={currentItems}
               // @ts-ignore
               selectable={{
                 itemsName: 'Products',

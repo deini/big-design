@@ -29,7 +29,7 @@ export class PropTable extends React.PureComponent<PropTableProps> {
           columns={[
             {
               header: 'Prop Name',
-              Cell: ({ name, required }) => (
+              render: ({ name, required }) => (
                 <>
                   <Code primary>{name}</Code>
                   {required ? <b> *</b> : null}
@@ -38,19 +38,19 @@ export class PropTable extends React.PureComponent<PropTableProps> {
             },
             {
               header: 'Type',
-              Cell: ({ types }) => <TypesData types={types} />,
+              render: ({ types }) => <TypesData types={types} />,
             },
             {
               header: 'Default',
-              Cell: ({ defaultValue }) => <Code highlight={false}>{defaultValue}</Code>,
+              render: ({ defaultValue }) => <Code highlight={false}>{defaultValue}</Code>,
             },
             {
               header: 'Description',
               width: '50%',
-              Cell: ({ description }) => <Text>{description}</Text>,
+              render: ({ description }) => <Text>{description}</Text>,
             },
           ]}
-          data={items}
+          items={items}
         />
 
         <Small>Props ending with * are required</Small>

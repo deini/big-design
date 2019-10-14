@@ -13,7 +13,7 @@ export interface TableItem {
 }
 
 export interface TableColumn<T> {
-  Cell: React.ComponentType<T>;
+  render: React.ComponentType<T>;
   align?: 'left' | 'center' | 'right';
   header: string | React.ReactNode;
   verticalAlign?: 'top' | 'center';
@@ -24,7 +24,7 @@ export type TablePagination = Omit<PaginationProps, keyof MarginProps>;
 
 export interface TableProps<T> extends React.TableHTMLAttributes<HTMLTableElement> {
   columns: Array<TableColumn<T>>;
-  data: T[];
+  items: T[];
   pagination?: TablePagination;
   selectable?: TableSelectable<T>;
   stickyHeader?: boolean;

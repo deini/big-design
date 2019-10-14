@@ -12,7 +12,7 @@ import { Head } from './Head';
 import { Item } from './Item';
 
 export const Table = <T extends TableItem>(props: TableProps<T>): React.ReactElement<TableProps<T>> => {
-  const { className, stickyHeader, style, data, columns, pagination, selectable, id, ...rest } = props;
+  const { className, stickyHeader, style, items, columns, pagination, selectable, id, ...rest } = props;
   const tableIdRef = useRef(id || uniqueId('table_'));
   const isSelectable = Boolean(selectable);
 
@@ -26,20 +26,20 @@ export const Table = <T extends TableItem>(props: TableProps<T>): React.ReactEle
     </Head>
   );
 
-  const isRowSelected = (row: T) => {
-    return selectable && selectable.selectedItems.includes(row);
+  const isItemSelected = (item: T) => {
+    return selectable && selectable.selectedItems.includes(item);
   };
 
   const renderItems = () => (
     <Body>
-      {data.map((item: T, index) => (
+      {items.map((item: T, index) => (
         <Item
           isSelectable={isSelectable}
           key={getKey(item, index)}
-          onItemSelect={nextValue => handleRowSelect(item, nextValue)}
-          selected={isRowSelected(item)}
+          onItemSelect={nextValue => onItemSelect(item, nextValue)}
+          selected={isItemSelected(item)}
         >
-          {props.columns.map(({ Cell: CellContent }, ind) => (
+          {props.columns.map(({ render: CellContent }, ind) => (
             <Cell key={ind}>
               <CellContent {...item} />
             </Cell>
@@ -49,7 +49,7 @@ export const Table = <T extends TableItem>(props: TableProps<T>): React.ReactEle
     </Body>
   );
 
-  const handleRowSelect = (row: T, isSelected: boolean) => {
+  const onItemSelect = (item: T, isSelected: boolean) => {
     if (!selectable) {
       return;
     }
@@ -57,9 +57,9 @@ export const Table = <T extends TableItem>(props: TableProps<T>): React.ReactEle
     const { selectedItems, onSelectionChange } = selectable;
 
     if (isSelected) {
-      onSelectionChange([...selectedItems, row]);
+      onSelectionChange([...selectedItems, item]);
     } else {
-      onSelectionChange(selectedItems.filter(item => item !== row));
+      onSelectionChange(selectedItems.filter(selectedItem => selectedItem !== item));
     }
   };
 
@@ -70,7 +70,7 @@ export const Table = <T extends TableItem>(props: TableProps<T>): React.ReactEle
   return (
     <TableContext.Provider value={{ stickyHeader }}>
       {shouldRenderActions() && (
-        <Actions pagination={pagination} selectable={selectable} items={data} tableId={tableIdRef.current} />
+        <Actions pagination={pagination} selectable={selectable} items={items} tableId={tableIdRef.current} />
       )}
       <StyledTable id={tableIdRef.current} {...rest}>
         {renderHeaders()}
