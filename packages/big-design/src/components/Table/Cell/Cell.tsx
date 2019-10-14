@@ -9,6 +9,7 @@ export interface CellProps extends React.TableHTMLAttributes<HTMLTableCellElemen
   isCheckbox?: boolean;
   verticalAlign?: 'top' | 'center';
   width?: number | string;
+  withPadding?: boolean;
 }
 
 export const Cell: React.FC<CellProps> = memo(({ align, children, isCheckbox, verticalAlign, width }: CellProps) => {

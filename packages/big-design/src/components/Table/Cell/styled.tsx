@@ -59,6 +59,7 @@ export const StyledTableData = styled.td<SharedCellProps>`
   ${SharedCellStyles}
 
   color: ${({ theme }) => theme.colors.secondary70};
+  padding: ${({ theme, withPadding }) => (withPadding ? theme.spacing.small : 0)};
 `;
 
 StyledTableHeader.defaultProps = { theme: defaultTheme };

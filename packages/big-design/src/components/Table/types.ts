@@ -18,6 +18,7 @@ export interface TableColumn<T> {
   header: string | React.ReactNode;
   verticalAlign?: 'top' | 'center';
   width?: number | string;
+  withPadding?: boolean;
 }
 
 export type TablePagination = Omit<PaginationProps, keyof MarginProps>;
@@ -28,5 +29,4 @@ export interface TableProps<T> extends React.TableHTMLAttributes<HTMLTableElemen
   pagination?: TablePagination;
   selectable?: TableSelectable<T>;
   stickyHeader?: boolean;
-  withPadding?: boolean;
 }
