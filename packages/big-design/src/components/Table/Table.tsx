@@ -39,10 +39,6 @@ export const Table = <T extends TableItem>(props: TableProps<T>): React.ReactEle
     </Head>
   );
 
-  const isItemSelected = (item: T) => {
-    return selectable && selectable.selectedItems.includes(item);
-  };
-
   const renderItems = () => (
     <Body>
       {items.map((item: T, index) => (
@@ -61,6 +57,10 @@ export const Table = <T extends TableItem>(props: TableProps<T>): React.ReactEle
       ))}
     </Body>
   );
+
+  const isItemSelected = (item: T) => {
+    return selectable && selectable.selectedItems.includes(item);
+  };
 
   const onItemSelect = (item: T, isSelected: boolean) => {
     if (!selectable) {
