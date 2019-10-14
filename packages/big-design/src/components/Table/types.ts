@@ -28,4 +28,5 @@ export interface TableProps<T> extends React.TableHTMLAttributes<HTMLTableElemen
   pagination?: TablePagination;
   selectable?: TableSelectable<T>;
   stickyHeader?: boolean;
+  withPadding?: boolean;
 }

@@ -12,15 +12,28 @@ import { Head } from './Head';
 import { Item } from './Item';
 
 export const Table = <T extends TableItem>(props: TableProps<T>): React.ReactElement<TableProps<T>> => {
-  const { className, stickyHeader, style, items, columns, pagination, selectable, id, ...rest } = props;
+  const {
+    className,
+    stickyHeader,
+    style,
+    items,
+    columns,
+    pagination,
+    selectable,
+    id,
+    withPadding = true,
+    ...rest
+  } = props;
   const tableIdRef = useRef(id || uniqueId('table_'));
   const isSelectable = Boolean(selectable);
 
   const renderHeaders = () => (
     <Head>
       <Item isSelectable={isSelectable}>
-        {columns.map(({ header }, index) => (
-          <Cell key={index}>{header}</Cell>
+        {columns.map(({ header, width }, index) => (
+          <Cell key={index} width={width}>
+            {header}
+          </Cell>
         ))}
       </Item>
     </Head>
@@ -39,8 +52,8 @@ export const Table = <T extends TableItem>(props: TableProps<T>): React.ReactEle
           onItemSelect={nextValue => onItemSelect(item, nextValue)}
           selected={isItemSelected(item)}
         >
-          {props.columns.map(({ render: CellContent }, ind) => (
-            <Cell key={ind}>
+          {props.columns.map(({ render: CellContent, align, verticalAlign, width }, ind) => (
+            <Cell key={ind} align={align} verticalAlign={verticalAlign} width={width}>
               <CellContent {...item} />
             </Cell>
           ))}
