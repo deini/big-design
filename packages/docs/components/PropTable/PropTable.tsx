@@ -1,10 +1,11 @@
-import { Small, Table, TableFigure } from '@bigcommerce/big-design';
+import { Link, Small, Table, TableFigure, Text } from '@bigcommerce/big-design';
 import React, { ReactNode } from 'react';
 
 import { Code } from '../Code';
 
-import { TypesData } from './Prop';
-import { StyledTableCell } from './Prop/styled';
+interface TypesDataProps {
+  types: any;
+}
 
 export interface Prop {
   name: ReactNode;
@@ -20,51 +21,57 @@ export interface PropTableProps {
 
 export class PropTable extends React.PureComponent<PropTableProps> {
   render() {
-    return <p>Prop Table</p>;
-    // const items = this.props.propList.map(({ name, types, description, defaultValue = '', required }) => ({
-    //   cells: [
-    //     {
-    //       content: (
-    //         <StyledTableCell>
-    //           <Code primary>{name}</Code>
-    //           {required ? <b> *</b> : null}
-    //         </StyledTableCell>
-    //       ),
-    //     },
-    //     {
-    //       content: (
-    //         <StyledTableCell>
-    //           <TypesData types={types} />
-    //         </StyledTableCell>
-    //       ),
-    //     },
-    //     {
-    //       content: (
-    //         <StyledTableCell>
-    //           <Code highlight={false}>{defaultValue}</Code>
-    //         </StyledTableCell>
-    //       ),
-    //     },
-    //     {
-    //       content: <StyledTableCell>{description}</StyledTableCell>,
-    //     },
-    //   ] as TableCell[],
-    // }));
+    const items = this.props.propList;
 
-    // return (
-    //   <TableFigure>
-    //     <Table
-    //       headers={[
-    //         { content: 'Prop Name' },
-    //         { content: 'Type' },
-    //         { content: 'Default' },
-    //         { content: 'Description', width: '50%' },
-    //       ]}
-    //       items={items}
-    //     />
+    return (
+      <TableFigure>
+        <Table
+          columns={[
+            {
+              header: 'Prop Name',
+              Cell: ({ name, required }) => (
+                <>
+                  <Code primary>{name}</Code>
+                  {required ? <b> *</b> : null}
+                </>
+              ),
+            },
+            {
+              header: 'Type',
+              Cell: ({ types }) => <TypesData types={types} />,
+            },
+            {
+              header: 'Default',
+              Cell: ({ defaultValue }) => <Code highlight={false}>{defaultValue}</Code>,
+            },
+            {
+              header: 'Description',
+              width: '50%',
+              Cell: ({ description }) => <Text>{description}</Text>,
+            },
+          ]}
+          data={items}
+        />
 
-    //     <Small>Props ending with * are required</Small>
-    //   </TableFigure>
-    // );
+        <Small>Props ending with * are required</Small>
+      </TableFigure>
+    );
   }
 }
+
+const TypesData: React.FC<TypesDataProps> = (props): any => {
+  const { types } = props;
+
+  if (Array.isArray(types)) {
+    return types.map((type, index) => {
+      return (
+        <React.Fragment key={type}>
+          {type.type === Link ? <Code highlight={false}>{type}</Code> : <Code>{type}</Code>}
+          {index < types.length - 1 ? ' | ' : null}
+        </React.Fragment>
+      );
+    });
+  }
+
+  return types.type === Link ? <Code highlight={false}>{types}</Code> : <Code>{types}</Code>;
+};

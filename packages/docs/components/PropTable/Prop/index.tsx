@@ -3,8 +3,6 @@ import React from 'react';
 
 import { Code } from '../../';
 
-export { StyledTableCell } from './styled';
-
 interface Props {
   name: string;
   defaults?: string;

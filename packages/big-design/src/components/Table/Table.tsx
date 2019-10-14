@@ -11,76 +11,74 @@ import { Cell } from './Cell';
 import { Head } from './Head';
 import { Item } from './Item';
 
-export const Table = memo(
-  <T extends TableItem>(props: TableProps<T>): React.ReactElement<TableProps<T>> => {
-    const { className, stickyHeader, style, data, columns, pagination, selectable, id, ...rest } = props;
-    const tableIdRef = useRef(id || uniqueId('table_'));
-    const isSelectable = Boolean(selectable);
+export const Table = <T extends TableItem>(props: TableProps<T>): React.ReactElement<TableProps<T>> => {
+  const { className, stickyHeader, style, data, columns, pagination, selectable, id, ...rest } = props;
+  const tableIdRef = useRef(id || uniqueId('table_'));
+  const isSelectable = Boolean(selectable);
 
-    const renderHeaders = () => (
-      <Head>
-        <Item isSelectable={isSelectable}>
-          {columns.map(({ header }, index) => (
-            <Cell key={index}>{header}</Cell>
+  const renderHeaders = () => (
+    <Head>
+      <Item isSelectable={isSelectable}>
+        {columns.map(({ header }, index) => (
+          <Cell key={index}>{header}</Cell>
+        ))}
+      </Item>
+    </Head>
+  );
+
+  const isRowSelected = (row: T) => {
+    return selectable && selectable.selectedItems.includes(row);
+  };
+
+  const renderItems = () => (
+    <Body>
+      {data.map((item: T, index) => (
+        <Item
+          isSelectable={isSelectable}
+          key={getKey(item, index)}
+          onItemSelect={nextValue => handleRowSelect(item, nextValue)}
+          selected={isRowSelected(item)}
+        >
+          {props.columns.map(({ Cell: CustomCell }, ind) => (
+            <Cell key={ind}>
+              <CustomCell {...item} />
+            </Cell>
           ))}
         </Item>
-      </Head>
-    );
+      ))}
+    </Body>
+  );
 
-    const isRowSelected = (row: T) => {
-      return selectable && selectable.selectedItems.includes(row);
-    };
+  const handleRowSelect = (row: T, isSelected: boolean) => {
+    if (!selectable) {
+      return;
+    }
 
-    const renderItems = () => (
-      <Body>
-        {data.map((item: T, index) => (
-          <Item
-            isSelectable={isSelectable}
-            key={getKey(item, index)}
-            onItemSelect={nextValue => handleRowSelect(item, nextValue)}
-            selected={isRowSelected(item)}
-          >
-            {props.columns.map(({ Cell: CustomCell }, ind) => (
-              <Cell key={ind}>
-                <CustomCell {...item} />
-              </Cell>
-            ))}
-          </Item>
-        ))}
-      </Body>
-    );
+    const { selectedItems, onSelectionChange } = selectable;
 
-    const handleRowSelect = (row: T, isSelected: boolean) => {
-      if (!selectable) {
-        return;
-      }
+    if (isSelected) {
+      onSelectionChange([...selectedItems, row]);
+    } else {
+      onSelectionChange(selectedItems.filter(item => item !== row));
+    }
+  };
 
-      const { selectedItems, onSelectionChange } = selectable;
+  const shouldRenderActions = () => {
+    return Boolean(pagination) || Boolean(selectable);
+  };
 
-      if (isSelected) {
-        onSelectionChange([...selectedItems, row]);
-      } else {
-        onSelectionChange(selectedItems.filter(item => item !== row));
-      }
-    };
-
-    const shouldRenderActions = () => {
-      return Boolean(pagination) || Boolean(selectable);
-    };
-
-    return (
-      <TableContext.Provider value={{ stickyHeader }}>
-        {shouldRenderActions() && (
-          <Actions pagination={pagination} selectable={selectable} items={data} tableId={tableIdRef.current} />
-        )}
-        <StyledTable id={tableIdRef.current} {...rest}>
-          {renderHeaders()}
-          {renderItems()}
-        </StyledTable>
-      </TableContext.Provider>
-    );
-  },
-);
+  return (
+    <TableContext.Provider value={{ stickyHeader }}>
+      {shouldRenderActions() && (
+        <Actions pagination={pagination} selectable={selectable} items={data} tableId={tableIdRef.current} />
+      )}
+      <StyledTable id={tableIdRef.current} {...rest}>
+        {renderHeaders()}
+        {renderItems()}
+      </StyledTable>
+    </TableContext.Provider>
+  );
+};
 
 function getKey<T extends TableItem>({ id }: T, index: number): string | number {
   if (id !== undefined) {

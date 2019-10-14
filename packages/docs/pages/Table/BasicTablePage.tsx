@@ -1,10 +1,10 @@
 import { H0, H1, H2, Table } from '@bigcommerce/big-design';
-import { TableColumn, TableItem } from '@bigcommerce/big-design/dist/src/components/Table/types';
+import { TableItem } from '@bigcommerce/big-design/dist/src/components/Table/types';
 import React from 'react';
 
 import { CodePreview } from '../../components';
 
-interface Item {
+interface Item extends TableItem {
   sku: string;
   name: string;
   stock: number;
@@ -26,8 +26,6 @@ const data: Item[] = [
   { sku: 'SLCTBS', name: '[Sample] Fog Linen Chambray Towel - Beige Stripe with some fondu of some sort', stock: 49 },
 ];
 
-const Rng: React.FC<Item> = ({ sku }) => <>{sku}</>;
-
 const columns = [
   {
     header: 'Sku',
@@ -48,32 +46,33 @@ export default () => {
     <>
       <H0>Table</H0>
 
-      <CodePreview scope={{ data }}>
+      <CodePreview>
         {/* jsx-to-string:start */}
         <Table
           columns={[
             {
               header: 'Sku',
-              // Cell: ({ sku }) => sku,
-              Cell: (props) => props.sku,
+              // @ts-ignore
+              Cell: ({ sku }) => sku,
             },
             {
               header: 'Name',
+              // @ts-ignore
               Cell: ({ name }) => name,
             },
             {
               header: 'Stock',
+              // @ts-ignore
               Cell: ({ stock }) => stock,
             },
           ]}
-          data={data}
-          // data={[
-          //   { sku: 'SM13', name: '[Sample] Smith Journal 13', stock: 25 },
-          //   { sku: 'DPB', name: '[Sample] Dustpan & Brush', stock: 34 },
-          //   { sku: 'OFSUC', name: '[Sample] Utility Caddy', stock: 45 },
-          //   { sku: 'CLC', name: '[Sample] Canvas Laundry Cart', stock: 2 },
-          //   { sku: 'CGLD', name: '[Sample] Laundry Detergent', stock: 29 },
-          // ]}
+          data={[
+            { sku: 'SM13', name: '[Sample] Smith Journal 13', stock: 25 },
+            { sku: 'DPB', name: '[Sample] Dustpan & Brush', stock: 34 },
+            { sku: 'OFSUC', name: '[Sample] Utility Caddy', stock: 45 },
+            { sku: 'CLC', name: '[Sample] Canvas Laundry Cart', stock: 2 },
+            { sku: 'CGLD', name: '[Sample] Laundry Detergent', stock: 29 },
+          ]}
         />
         {/* jsx-to-string:end */}
       </CodePreview>

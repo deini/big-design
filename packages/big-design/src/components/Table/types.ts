@@ -9,6 +9,7 @@ export interface TableSelectable<T> {
 
 export interface TableItem {
   id?: string | number;
+  [key: string]: any;
 }
 
 export interface TableColumn<T> {
