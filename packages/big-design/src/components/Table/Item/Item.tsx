@@ -12,7 +12,7 @@ export interface ItemProps extends React.TableHTMLAttributes<HTMLTableRowElement
   onItemSelect?(nextValue: boolean): void;
 }
 
-export const Item: React.FC<ItemProps> = memo(({ children, isSelectable, selected = false, onItemSelect, ...props }) => {
+export const Item: React.FC<ItemProps> = memo(({ children, isSelectable, selected = false, onItemSelect }) => {
   const tableSectionContext = useContext(TableSectionContext);
 
   const handleSelect = () => {
@@ -22,7 +22,7 @@ export const Item: React.FC<ItemProps> = memo(({ children, isSelectable, selecte
   };
 
   return (
-    <StyledTableItem selected={selected} {...props}>
+    <StyledTableItem selected={selected}>
       {isSelectable ? (
         <Cell isCheckbox>
           {tableSectionContext === 'tbody' ? <Checkbox checked={selected} onChange={handleSelect} /> : null}

@@ -9,7 +9,6 @@ export interface TableSelectable<T> {
 
 export interface TableItem {
   id?: string | number;
-  // [key: string]: any;
 }
 
 export interface TableColumn<T> {
@@ -22,7 +21,7 @@ export interface TableColumn<T> {
 
 export type TablePagination = Omit<PaginationProps, keyof MarginProps>;
 
-export interface TableProps<T extends TableItem> extends React.TableHTMLAttributes<HTMLTableElement> {
+export interface TableProps<T> extends React.TableHTMLAttributes<HTMLTableElement> {
   columns: Array<TableColumn<T>>;
   data: T[];
   pagination?: TablePagination;

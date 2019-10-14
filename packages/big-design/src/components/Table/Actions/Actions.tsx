@@ -8,7 +8,7 @@ import { TableItem, TablePagination, TableSelectable } from '../types';
 
 import { StyledActions } from './styled';
 
-export interface ActionsProps<T extends TableItem> {
+export interface ActionsProps<T> {
   items: T[];
   pagination?: TablePagination;
   selectable?: TableSelectable<T>;
