@@ -39,9 +39,9 @@ export const Table = <T extends TableItem>(props: TableProps<T>): React.ReactEle
           onItemSelect={nextValue => handleRowSelect(item, nextValue)}
           selected={isRowSelected(item)}
         >
-          {props.columns.map(({ Cell: CustomCell }, ind) => (
+          {props.columns.map(({ Cell: CellContent }, ind) => (
             <Cell key={ind}>
-              <CustomCell {...item} />
+              <CellContent {...item} />
             </Cell>
           ))}
         </Item>
