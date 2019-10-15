@@ -104,7 +104,7 @@ export const Table = <T extends TableItem>(props: TableProps<T>): React.ReactEle
       {shouldRenderActions() && (
         <Actions pagination={pagination} selectable={selectable} items={items} tableId={tableIdRef.current} />
       )}
-      <StyledTable id={tableIdRef.current} {...rest}>
+      <StyledTable {...rest} id={tableIdRef.current}>
         {renderHeaders()}
         {renderItems()}
       </StyledTable>

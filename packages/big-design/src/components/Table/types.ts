@@ -25,7 +25,7 @@ export interface TableColumn<T> {
 
 export type TablePagination = Omit<PaginationProps, keyof MarginProps>;
 
-export interface TableProps<T> extends React.TableHTMLAttributes<HTMLTableElement> {
+export interface TableProps<T> extends React.TableHTMLAttributes<HTMLTableElement>, MarginProps {
   columns: Array<TableColumn<T>>;
   items: T[];
   keyField?: string;

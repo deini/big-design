@@ -1,7 +1,7 @@
 import { theme as defaultTheme } from '@bigcommerce/big-design-theme';
 import styled from 'styled-components';
 
-import { TableProps } from './types';
+import { withMargins, MarginProps } from '../../mixins';
 
 export const StyledTableFigure = styled.figure`
   margin: 0;
@@ -16,7 +16,9 @@ export const StyledTableFigure = styled.figure`
   }
 `;
 
-export const StyledTable = styled.table<Partial<TableProps>>`
+export const StyledTable = styled.table<MarginProps>`
+  ${withMargins()};
+
   border-collapse: collapse;
   border-color: transparent;
   color: ${({ theme }) => theme.colors.secondary70};

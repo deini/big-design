@@ -79,7 +79,7 @@ export const Pagination: React.FC<PaginationProps> = memo(
     };
 
     return (
-      <Flex role="navigation" aria-label="pagination">
+      <Flex role="navigation" aria-label="pagination" flexDirection="row">
         <Flex.Item>
           <Dropdown
             onItemClick={handleRangeChange}

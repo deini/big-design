@@ -39,7 +39,7 @@ export const Actions = memo(
 
       return (
         <Flex.Item flexGrow={2}>
-          <Flex>
+          <Flex flexDirection="row">
             <Checkbox isIndeterminate={isIndeterminate} checked={isChecked} onChange={handleSelectAll} />
             <Text marginLeft="small">
               {totalSelectedItems}/{totalItemsInPage} {itemType}
@@ -50,7 +50,14 @@ export const Actions = memo(
     };
 
     return (
-      <StyledActions alignItems="center" aria-controls={tableId} justifyContent="stretch" padding="small" {...props}>
+      <StyledActions
+        alignItems="center"
+        aria-controls={tableId}
+        justifyContent="stretch"
+        padding="small"
+        flexDirection="row"
+        {...props}
+      >
         {selectable && renderSelectAllAction(selectable)}
         {pagination && (
           <Flex.Item style={{ marginLeft: 'auto' }}>

@@ -83,11 +83,17 @@ export default () => {
           const [range, setRange] = React.useState(ranges[0]);
           const [page, setPage] = React.useState(1);
           const [currentItems, setCurrentItems] = React.useState([]);
+          const [selectedItems, setSelectedItems] = React.useState([]);
 
           const onItemsPerPageChange = newRange => {
             setPage(1);
             setRange(newRange);
           };
+
+          const onPageChange = newPage => {
+            setSelectedItems([]);
+            setPage(newPage);
+          }
 
           React.useEffect(() => {
             const maxItems = page * range;
@@ -97,8 +103,6 @@ export default () => {
             // @ts-ignore
             setCurrentItems(items.slice(firstItem, lastItem));
           }, [page, items, range]);
-
-          const [selectedItems, setSelectedItems] = React.useState([]);
 
           return (
             <Table
@@ -113,7 +117,7 @@ export default () => {
               pagination={{
                 currentPage: page,
                 totalItems: items.length,
-                onPageChange: setPage,
+                onPageChange,
                 itemsPerPageOptions: ranges,
                 onItemsPerPageChange,
                 itemsPerPage: range,
