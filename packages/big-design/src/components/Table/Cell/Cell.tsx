@@ -12,30 +12,33 @@ export interface CellProps extends React.TableHTMLAttributes<HTMLTableCellElemen
   withPadding?: boolean;
 }
 
-export const Cell: React.FC<CellProps> = memo(({ align, children, isCheckbox, verticalAlign, width }: CellProps) => {
-  const tableContext = useContext(TableContext);
-  const tableSectionContext = useContext(TableSectionContext);
+export const Cell: React.FC<CellProps> = memo(
+  ({ align, children, isCheckbox, verticalAlign, width, withPadding = true }: CellProps) => {
+    const tableContext = useContext(TableContext);
+    const tableSectionContext = useContext(TableSectionContext);
 
-  const renderHeader = () => {
-    return (
-      <StyledTableHeader
-        stickyHeader={tableContext.stickyHeader}
-        align={align}
-        isCheckbox={isCheckbox}
-        width={width}
-      >
-        {children}
-      </StyledTableHeader>
-    );
-  };
+    const renderHeader = () => {
+      return (
+        <StyledTableHeader stickyHeader={tableContext.stickyHeader} align={align} isCheckbox={isCheckbox} width={width}>
+          {children}
+        </StyledTableHeader>
+      );
+    };
 
-  const renderData = () => {
-    return (
-      <StyledTableData align={align} isCheckbox={isCheckbox} verticalAlign={verticalAlign} width={width}>
-        {children}
-      </StyledTableData>
-    );
-  };
+    const renderData = () => {
+      return (
+        <StyledTableData
+          align={align}
+          isCheckbox={isCheckbox}
+          verticalAlign={verticalAlign}
+          width={width}
+          withPadding={withPadding}
+        >
+          {children}
+        </StyledTableData>
+      );
+    };
 
-  return tableSectionContext === 'thead' ? renderHeader() : renderData();
-});
+    return tableSectionContext === 'thead' ? renderHeader() : renderData();
+  },
+);
