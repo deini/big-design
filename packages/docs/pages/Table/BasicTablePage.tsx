@@ -52,17 +52,14 @@ export default () => {
           columns={[
             {
               header: 'Sku',
-              // @ts-ignore
               render: ({ sku }) => sku,
             },
             {
               header: 'Name',
-              // @ts-ignore
               render: ({ name }) => name,
             },
             {
               header: 'Stock',
-              // @ts-ignore
               render: ({ stock }) => stock,
             },
           ]}

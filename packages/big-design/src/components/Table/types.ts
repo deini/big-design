@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 import { MarginProps } from '../../mixins';
 import { PaginationProps } from '../Pagination';
 
@@ -13,12 +15,13 @@ export interface TableItem {
 }
 
 export interface TableColumn<T> {
-  render: React.ComponentType<T>;
+  render: React.ComponentType<T> | ((props: T & { children?: ReactNode }, context?: any) => string | number);
   align?: 'left' | 'center' | 'right';
   header: string | React.ReactNode;
   verticalAlign?: 'top' | 'center';
   width?: number | string;
   withPadding?: boolean;
+  hash?(item: T): string | number;
 }
 
 export type TablePagination = Omit<PaginationProps, keyof MarginProps>;
