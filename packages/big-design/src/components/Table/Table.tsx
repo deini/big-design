@@ -12,40 +12,28 @@ import { Head } from './Head';
 import { Item } from './Item';
 
 export const Table = <T extends TableItem>(props: TableProps<T>): React.ReactElement<TableProps<T>> => {
-  const { className, stickyHeader, style, items, columns, pagination, selectable, id, ...rest } = props;
+  const {
+    className,
+    stickyHeader,
+    style,
+    items,
+    columns,
+    pagination,
+    selectable,
+    id,
+    keyField = 'id',
+    ...rest
+  } = props;
   const tableIdRef = useRef(id || uniqueId('table_'));
   const isSelectable = Boolean(selectable);
 
-  const renderHeaders = () => (
-    <Head>
-      <Item isSelectable={isSelectable}>
-        {columns.map(({ header, width }, index) => (
-          <Cell key={index} width={width}>
-            {header}
-          </Cell>
-        ))}
-      </Item>
-    </Head>
-  );
+  const getItemKey = (item: T, index: number): string | number => {
+    if (item[keyField] !== undefined) {
+      return item[keyField];
+    }
 
-  const renderItems = () => (
-    <Body>
-      {items.map((item: T, index) => (
-        <Item
-          isSelectable={isSelectable}
-          key={getKey(item, index)}
-          onItemSelect={nextValue => onItemSelect(item, nextValue)}
-          selected={isItemSelected(item)}
-        >
-          {props.columns.map(({ render: CellContent, align, verticalAlign, width, withPadding = true }, ind) => (
-            <Cell key={ind} align={align} verticalAlign={verticalAlign} width={width} withPadding={withPadding}>
-              <CellContent {...item} />
-            </Cell>
-          ))}
-        </Item>
-      ))}
-    </Body>
-  );
+    return index;
+  };
 
   const isItemSelected = (item: T) => {
     return selectable && selectable.selectedItems.includes(item);
@@ -69,6 +57,48 @@ export const Table = <T extends TableItem>(props: TableProps<T>): React.ReactEle
     return Boolean(pagination) || Boolean(selectable);
   };
 
+  const renderHeaders = () => (
+    <Head>
+      <Item isSelectable={isSelectable}>
+        {columns.map(({ header, align, width }, index) => (
+          <Cell key={index} align={align} width={width}>
+            {header}
+          </Cell>
+        ))}
+      </Item>
+    </Head>
+  );
+
+  const renderItems = () => (
+    <Body>
+      {items.map((item: T, index) => (
+        <Item
+          isSelectable={isSelectable}
+          key={getItemKey(item, index)}
+          onItemSelect={nextValue => onItemSelect(item, nextValue)}
+          selected={isItemSelected(item)}
+        >
+          {props.columns.map(
+            ({ render: CellContent, align, verticalAlign, width, withPadding = true }, columnIndex) => (
+              <Cell
+                key={columnIndex}
+                align={align}
+                verticalAlign={verticalAlign}
+                width={width}
+                withPadding={withPadding}
+              >
+                {/* https://github.com/DefinitelyTyped/DefinitelyTyped/issues/20544 */}
+                {/* 
+                // @ts-ignore */}
+                <CellContent {...item} />
+              </Cell>
+            ),
+          )}
+        </Item>
+      ))}
+    </Body>
+  );
+
   return (
     <TableContext.Provider value={{ stickyHeader }}>
       {shouldRenderActions() && (
@@ -81,13 +111,5 @@ export const Table = <T extends TableItem>(props: TableProps<T>): React.ReactEle
     </TableContext.Provider>
   );
 };
-
-function getKey<T extends TableItem>({ id }: T, index: number): string | number {
-  if (id !== undefined) {
-    return id;
-  }
-
-  return index;
-}
 
 export const TableFigure: React.FC = memo(props => <StyledTableFigure {...props} />);

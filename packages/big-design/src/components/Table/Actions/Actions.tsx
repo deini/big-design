@@ -31,7 +31,7 @@ export const Actions = memo(
       }
     };
 
-    const renderSelectAllAction = ({ itemsName, selectedItems }: TableSelectable<T>) => {
+    const renderSelectAllAction = ({ itemType, selectedItems }: TableSelectable<T>) => {
       const totalSelectedItems = selectedItems.length;
       const totalItemsInPage = items.length;
       const isChecked = totalSelectedItems === totalItemsInPage && totalItemsInPage > 0;
@@ -42,7 +42,7 @@ export const Actions = memo(
           <Flex>
             <Checkbox isIndeterminate={isIndeterminate} checked={isChecked} onChange={handleSelectAll} />
             <Text marginLeft="small">
-              {totalSelectedItems}/{totalItemsInPage} {itemsName}
+              {totalSelectedItems}/{totalItemsInPage} {itemType}
             </Text>
           </Flex>
         </Flex.Item>

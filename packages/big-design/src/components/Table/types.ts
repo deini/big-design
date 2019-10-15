@@ -4,7 +4,7 @@ import { MarginProps } from '../../mixins';
 import { PaginationProps } from '../Pagination';
 
 export interface TableSelectable<T> {
-  itemsName?: string;
+  itemType?: string;
   selectedItems: T[];
   onSelectionChange(selectedItems: T[]): void;
 }
@@ -28,6 +28,7 @@ export type TablePagination = Omit<PaginationProps, keyof MarginProps>;
 export interface TableProps<T> extends React.TableHTMLAttributes<HTMLTableElement> {
   columns: Array<TableColumn<T>>;
   items: T[];
+  keyField?: string;
   pagination?: TablePagination;
   selectable?: TableSelectable<T>;
   stickyHeader?: boolean;

@@ -1,4 +1,4 @@
-import { H0, H1, H2, Table } from '@bigcommerce/big-design';
+import { H0, Table } from '@bigcommerce/big-design';
 import { TableItem } from '@bigcommerce/big-design/dist/src/components/Table/types';
 import React from 'react';
 
@@ -78,7 +78,7 @@ export default () => {
         {/* jsx-to-string:start */}
         {function Example() {
           const [items] = React.useState(data);
-          const [ranges] = React.useState([10, 20, 30, 50, 100]);
+          const [ranges] = React.useState([10, 20, 30]);
 
           const [range, setRange] = React.useState(ranges[0]);
           const [page, setPage] = React.useState(1);
@@ -106,7 +106,7 @@ export default () => {
               columns={columns}
               items={currentItems}
               selectable={{
-                itemsName: 'Products',
+                itemType: 'Products',
                 onSelectionChange: setSelectedItems,
                 selectedItems,
               }}
@@ -123,41 +123,6 @@ export default () => {
         }}
         {/* jsx-to-string:end */}
       </CodePreview>
-
-      <H1>API</H1>
-
-      <H2>Table</H2>
-
-      {/* <TablePropTable />
-
-      <H2>Table.Actions</H2>
-
-      <TableActionsPropTable />
-
-      <H2>Table.Body</H2>
-
-      <TableBodyPropTable />
-
-      <H2>Table.Cell</H2>
-
-      <TableCellPropTable />
-
-      <H2>Table.Footer</H2>
-
-      <H2>Table.Head</H2>
-
-      <H2>Table.Row</H2> */}
-
-      {/* <H2>Static Member</H2>
-      <H2>Inherited Props</H2>
-      <Collapsible title="Inherited Props">
-        <InheritedPropTable />
-      </Collapsible>
-      <H1>Examples</H1>
-      <H2>Example 1</H2>
-      <CodePreview></CodePreview> || <CodeSnippet></CodeSnippet>
-      <H2>Example 2</H2>
-      <CodePreview></CodePreview> || <CodeSnippet></CodeSnippet> */}
     </>
   );
 };
