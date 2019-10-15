@@ -105,7 +105,6 @@ export default () => {
               stickyHeader
               columns={columns}
               items={currentItems}
-              // @ts-ignore
               selectable={{
                 itemsName: 'Products',
                 onSelectionChange: setSelectedItems,

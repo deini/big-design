@@ -21,7 +21,6 @@ export interface TableColumn<T> {
   verticalAlign?: 'top' | 'center';
   width?: number | string;
   withPadding?: boolean;
-  hash?(item: T): string | number;
 }
 
 export type TablePagination = Omit<PaginationProps, keyof MarginProps>;
