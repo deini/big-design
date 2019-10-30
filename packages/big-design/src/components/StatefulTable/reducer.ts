@@ -2,8 +2,11 @@ import { Reducer } from 'react';
 
 import { TableSortDirection } from '../Table';
 
+import { StatefulTableColumn } from './StatefulTable';
+
 interface State<T> {
   currentItems: any[];
+  columns: Array<StatefulTableColumn<T> & { isSortable: boolean }>;
   isPaginationEnabled: boolean;
   items: T[];
   pagination: {
@@ -38,6 +41,7 @@ const getItems = (
 export type Action<T> =
   | { type: 'ITEMS_CHANGED'; payload: { items: T[]; isPaginationEnabled: boolean } }
   | { type: 'PAGE_CHANGE'; page: number }
+  | { type: 'COLUMNS_CHANGED'; columns: Array<StatefulTableColumn<T>> }
   | { type: 'ITEMS_PER_PAGE_CHANGE'; itemsPerPage: number }
   | { type: 'SELECTED_ITEMS'; selectedItems: T[] }
   | { type: 'SORT'; payload: { direction: TableSortDirection; columnHash: string; sortKey: keyof T } };
@@ -53,29 +57,12 @@ export const createReducer = <T>(): Reducer<State<T>, Action<T>> => (state, acti
   console.groupEnd();
 
   switch (action.type) {
-    case 'SORT': {
-      const direction = action.payload.direction;
-      const columnHash = action.payload.columnHash;
-      const sortKey = action.payload.sortKey;
-      const items = sort(state.items, direction, sortKey);
-
-      const currentItems = getItems(items, state.isPaginationEnabled, {
-        currentPage: 1,
-        itemsPerPage: state.pagination.itemsPerPage,
-      });
+    case 'COLUMNS_CHANGED': {
+      const columns = action.columns;
 
       return {
         ...state,
-        currentItems,
-        items,
-        pagination: {
-          ...state.pagination,
-          currentPage: 1,
-        },
-        sortable: {
-          direction,
-          columnHash,
-        },
+        columns: columns.map(column => ({ ...column, isSortable: Boolean(column.sortKey) })),
       };
     }
 
@@ -145,6 +132,32 @@ export const createReducer = <T>(): Reducer<State<T>, Action<T>> => (state, acti
       return {
         ...state,
         selectedItems: action.selectedItems,
+      };
+    }
+
+    case 'SORT': {
+      const direction = action.payload.direction;
+      const columnHash = action.payload.columnHash;
+      const sortKey = action.payload.sortKey;
+      const items = sort(state.items, direction, sortKey);
+
+      const currentItems = getItems(items, state.isPaginationEnabled, {
+        currentPage: 1,
+        itemsPerPage: state.pagination.itemsPerPage,
+      });
+
+      return {
+        ...state,
+        currentItems,
+        items,
+        pagination: {
+          ...state.pagination,
+          currentPage: 1,
+        },
+        sortable: {
+          direction,
+          columnHash,
+        },
       };
     }
 

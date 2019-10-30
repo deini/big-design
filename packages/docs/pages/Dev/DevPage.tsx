@@ -13,7 +13,6 @@ const columns: Array<StatefulTableColumn<User>> = [
     header: 'Name',
     hash: 'name',
     render: ({ firstName, lastName }) => `${firstName} ${lastName}`,
-    // isSortable: true,
     sortKey: 'firstName',
   },
   { header: 'Country', hash: 'country', render: ({ country }) => country },
