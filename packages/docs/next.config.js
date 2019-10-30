@@ -15,6 +15,7 @@ module.exports = {
     return config;
   },
   exportPathMap: () => ({
+    '/Dev': { page: '/Dev/DevPage' },
     '/': { page: '/GettingStarted/GettingStartedPage' },
     '/badge': { page: '/Badge/BadgePage' },
     '/box': { page: '/Box/BoxPage' },
