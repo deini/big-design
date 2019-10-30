@@ -32,7 +32,7 @@ const InternalStatefulTable = <T extends TableItem>(
     items,
     pagination: {
       currentPage: 1,
-      itemsPerPage: 5,
+      itemsPerPage: 25,
       itemsPerPageOptions: [25, 50, 100, 250],
       totalItems: items.length,
     },

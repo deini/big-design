@@ -24,24 +24,7 @@ export default () => {
   return (
     <>
       <Button onClick={() => setCount(s => s + 1)}>Re-Render!</Button>
-      <StatefulTable
-        itemName="Users"
-        columns={columns}
-        // columns={[
-        //   { header: 'Image', hash: 'img', render: ({ firstName, image }) => <Avatar url={image} name={firstName} /> },
-        //   {
-        //     header: 'Name',
-        //     hash: 'name',
-        //     render: ({ firstName, lastName }) => `${firstName} ${lastName}`,
-        //     isSortable: true,
-        //     sortKey: 'firstName',
-        //   },
-        //   { header: 'Country', hash: 'country', render: ({ country }) => country },
-        // ]}
-        items={data}
-        pagination={true}
-        selectable={true}
-      />
+      <StatefulTable itemName="Users" columns={columns} items={data} pagination={true} selectable={true} />
     </>
   );
 };
