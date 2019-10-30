@@ -39,10 +39,10 @@ const getItems = (
 };
 
 export type Action<T> =
-  | { type: 'ITEMS_CHANGED'; payload: { items: T[]; isPaginationEnabled: boolean } }
-  | { type: 'PAGE_CHANGE'; page: number }
   | { type: 'COLUMNS_CHANGED'; columns: Array<StatefulTableColumn<T>> }
+  | { type: 'ITEMS_CHANGED'; payload: { items: T[]; isPaginationEnabled: boolean } }
   | { type: 'ITEMS_PER_PAGE_CHANGE'; itemsPerPage: number }
+  | { type: 'PAGE_CHANGE'; page: number }
   | { type: 'SELECTED_ITEMS'; selectedItems: T[] }
   | { type: 'SORT'; payload: { direction: TableSortDirection; columnHash: string; sortKey: keyof T } };
 

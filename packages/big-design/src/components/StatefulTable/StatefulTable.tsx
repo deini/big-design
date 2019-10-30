@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useReducer } from 'react';
+import React, { useCallback, useEffect, useMemo, useReducer } from 'react';
 
 import { typedMemo } from '../../utils';
 import { Table, TableColumn, TableItem, TableProps, TableSortDirection } from '../Table';
@@ -48,28 +48,41 @@ const InternalStatefulTable = <T extends TableItem>(
     pagination,
   ]);
 
-  const onPageChange = (page: number) => dispatch({ type: 'PAGE_CHANGE', page });
-  const onItemsPerPageChange = (itemsPerPage: number) => dispatch({ type: 'ITEMS_PER_PAGE_CHANGE', itemsPerPage });
-  const onSelectionChange = (selectedItems: T[]) => dispatch({ type: 'SELECTED_ITEMS', selectedItems });
+  const onPageChange = useCallback((page: number) => dispatch({ type: 'PAGE_CHANGE', page }), []);
+  const onItemsPerPageChange = useCallback(
+    (itemsPerPage: number) => dispatch({ type: 'ITEMS_PER_PAGE_CHANGE', itemsPerPage }),
+    [],
+  );
+  const onSelectionChange = useCallback(
+    (selectedItems: T[]) => dispatch({ type: 'SELECTED_ITEMS', selectedItems }),
+    [],
+  );
 
-  const onSort = (columnHash: string, direction: TableSortDirection, column: StatefulTableColumn<T>) => {
+  const onSort = useCallback((columnHash: string, direction: TableSortDirection, column: StatefulTableColumn<T>) => {
     if (column.sortKey === undefined) {
       return;
     }
 
-    dispatch({
-      type: 'SORT',
-      payload: {
-        columnHash,
-        direction,
-        sortKey: column.sortKey,
-      },
-    });
-  };
+    const payload = { columnHash, direction, sortKey: column.sortKey };
 
-  const paginationOptions = pagination ? { ...state.pagination, onItemsPerPageChange, onPageChange } : undefined;
-  const selectableOptions = selectable ? { selectedItems: state.selectedItems, onSelectionChange } : undefined;
-  const sortableOptions = sortable ? { ...state.sortable, onSort } : undefined;
+    dispatch({ type: 'SORT', payload });
+  }, []);
+
+  const paginationOptions = useMemo(
+    () => (pagination ? { ...state.pagination, onItemsPerPageChange, onPageChange } : undefined),
+    [pagination, state.pagination, onItemsPerPageChange, onPageChange],
+  );
+
+  const selectableOptions = useMemo(
+    () => (selectable ? { selectedItems: state.selectedItems, onSelectionChange } : undefined),
+    [selectable, state.selectedItems, onSelectionChange],
+  );
+
+  const sortableOptions = useMemo(() => (sortable ? { ...state.sortable, onSort } : undefined), [
+    sortable,
+    state.sortable,
+    onSort,
+  ]);
 
   return (
     <Table
