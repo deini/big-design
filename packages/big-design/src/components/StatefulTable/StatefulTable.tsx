@@ -1,7 +1,8 @@
-import React, { useCallback, useEffect, useMemo, useReducer } from 'react';
+import React, { useCallback, useMemo, useReducer } from 'react';
 
 import { typedMemo } from '../../utils';
-import { Table, TableColumn, TableItem, TableProps, TableSortDirection } from '../Table';
+import { useDidUpdate } from '../../utils/useDidUpdate';
+import { Table, TableColumn, TableItem, TableProps, TableSelectable, TableSortDirection } from '../Table';
 
 import { createReducer, createReducerInit } from './reducer';
 
@@ -15,6 +16,7 @@ export interface StatefulTableProps<T>
   pagination?: boolean;
   selectable?: boolean;
   defaultSelected?: T[];
+  onSelectionChange?: TableSelectable<T>['onSelectionChange'];
 }
 
 const InternalStatefulTable = <T extends TableItem>({
@@ -23,6 +25,7 @@ const InternalStatefulTable = <T extends TableItem>({
   itemName,
   items = [],
   keyField,
+  onSelectionChange,
   pagination = true,
   selectable = true,
   stickyHeader = false,
@@ -33,18 +36,21 @@ const InternalStatefulTable = <T extends TableItem>({
 
   const [state, dispatch] = useReducer(reducer, { columns, defaultSelected, items, pagination }, reducerInit);
 
-  useEffect(() => dispatch({ type: 'COLUMNS_CHANGED', columns }), [columns]);
-  useEffect(() => dispatch({ type: 'ITEMS_CHANGED', items, isPaginationEnabled: pagination }), [items, pagination]);
+  useDidUpdate(() => dispatch({ type: 'COLUMNS_CHANGED', columns }), [columns]);
+  useDidUpdate(() => dispatch({ type: 'ITEMS_CHANGED', items, isPaginationEnabled: pagination }), [items, pagination]);
 
   const onPageChange = useCallback((page: number) => dispatch({ type: 'PAGE_CHANGE', page }), []);
   const onItemsPerPageChange = useCallback(
     (itemsPerPage: number) => dispatch({ type: 'ITEMS_PER_PAGE_CHANGE', itemsPerPage }),
     [],
   );
-  const onSelectionChange = useCallback(
-    (selectedItems: T[]) => dispatch({ type: 'SELECTED_ITEMS', selectedItems }),
-    [],
-  );
+  const onItemSelect = useCallback((selectedItems: T[]) => {
+    dispatch({ type: 'SELECTED_ITEMS', selectedItems });
+
+    if (typeof onSelectionChange === 'function') {
+      onSelectionChange(selectedItems);
+    }
+  }, []);
 
   const onSort = useCallback((columnHash: string, direction: TableSortDirection, column: StatefulTableColumn<T>) => {
     dispatch({ type: 'SORT', columnHash, direction, sortKey: column.sortKey });
@@ -56,8 +62,8 @@ const InternalStatefulTable = <T extends TableItem>({
   );
 
   const selectableOptions = useMemo(
-    () => (selectable ? { selectedItems: state.selectedItems, onSelectionChange } : undefined),
-    [selectable, state.selectedItems, onSelectionChange],
+    () => (selectable ? { selectedItems: state.selectedItems, onSelectionChange: onItemSelect } : undefined),
+    [selectable, state.selectedItems, onItemSelect],
   );
 
   const sortableOptions = useMemo(() => (sortable ? { ...state.sortable, onSort } : undefined), [

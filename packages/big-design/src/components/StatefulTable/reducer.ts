@@ -30,14 +30,18 @@ interface InitArgs<T> {
 }
 
 export const createReducerInit = <T>() => ({ columns, defaultSelected, items, pagination }: InitArgs<T>): State<T> => {
+  const currentPage = 1;
+  const itemsPerPage = 25;
+  const currentItems = getItems(items, pagination, { currentPage, itemsPerPage });
+
   return {
-    currentItems: [],
-    columns: columns.map(column => ({ ...column, isSortable: Boolean(column.sortKey) })),
+    currentItems,
+    columns: augmentColumns(columns),
     isPaginationEnabled: pagination,
     items,
     pagination: {
-      currentPage: 1,
-      itemsPerPage: 25,
+      currentPage,
+      itemsPerPage,
       itemsPerPageOptions: [25, 50, 100, 250],
       totalItems: items.length,
     },
@@ -47,22 +51,6 @@ export const createReducerInit = <T>() => ({ columns, defaultSelected, items, pa
     },
   };
 };
-
-function getItems<T>(
-  items: T[],
-  isPaginationEnabled: boolean,
-  paginationOptions: { currentPage: number; itemsPerPage: number },
-) {
-  if (!isPaginationEnabled) {
-    return items;
-  }
-
-  const maxItems = paginationOptions.currentPage * paginationOptions.itemsPerPage;
-  const lastItem = Math.min(maxItems, items.length);
-  const firstItem = Math.max(0, maxItems - paginationOptions.itemsPerPage);
-
-  return items.slice(firstItem, lastItem);
-}
 
 export type Action<T> =
   | { type: 'COLUMNS_CHANGED'; columns: Array<StatefulTableColumn<T>> }
@@ -86,7 +74,7 @@ export const createReducer = <T>(): Reducer<State<T>, Action<T>> => (state, acti
 
       return {
         ...state,
-        columns: columns.map(column => ({ ...column, isSortable: Boolean(column.sortKey) })),
+        columns: augmentColumns(columns),
       };
     }
 
@@ -153,10 +141,7 @@ export const createReducer = <T>(): Reducer<State<T>, Action<T>> => (state, acti
     }
 
     case 'SELECTED_ITEMS': {
-      return {
-        ...state,
-        selectedItems: action.selectedItems,
-      };
+      return { ...state, selectedItems: action.selectedItems };
     }
 
     case 'SORT': {
@@ -195,11 +180,40 @@ export const createReducer = <T>(): Reducer<State<T>, Action<T>> => (state, acti
   }
 };
 
+function augmentColumns<T>(columns: Array<StatefulTableColumn<T>>) {
+  return columns.map(column => ({ ...column, isSortable: Boolean(column.sortKey) }));
+}
+
+function getItems<T>(
+  items: T[],
+  isPaginationEnabled: boolean,
+  paginationOptions: { currentPage: number; itemsPerPage: number },
+) {
+  if (!isPaginationEnabled) {
+    return items;
+  }
+
+  const maxItems = paginationOptions.currentPage * paginationOptions.itemsPerPage;
+  const lastItem = Math.min(maxItems, items.length);
+  const firstItem = Math.max(0, maxItems - paginationOptions.itemsPerPage);
+
+  return items.slice(firstItem, lastItem);
+}
+
 function sort<T>(items: T[], direction: TableSortDirection, sortKey: keyof T) {
   return [...items].sort((firstItem, secondItem) => {
-    const firstValue = String(firstItem[sortKey]);
-    const secondValue = String(secondItem[sortKey]);
+    const firstValue = firstItem[sortKey];
+    const secondValue = secondItem[sortKey];
 
-    return direction === 'ASC' ? firstValue.localeCompare(secondValue) : secondValue.localeCompare(firstValue);
+    if (typeof firstValue === 'number' && typeof secondValue === 'number') {
+      return direction === 'ASC' ? firstValue - secondValue : secondValue - firstValue;
+    }
+
+    const firstValueString = String(firstValue);
+    const secondValueString = String(secondValue);
+
+    return direction === 'ASC'
+      ? firstValueString.localeCompare(secondValueString)
+      : secondValueString.localeCompare(firstValueString);
   });
 }

@@ -16,6 +16,7 @@ const columns: Array<StatefulTableColumn<User>> = [
     sortKey: 'firstName',
   },
   { header: 'Country', hash: 'country', render: ({ country }) => country },
+  { header: 'Rank', hash: 'rank', render: ({ rank }) => rank, sortKey: 'rank' },
 ];
 
 export default () => {
