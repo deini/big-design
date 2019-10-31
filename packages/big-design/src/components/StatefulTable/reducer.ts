@@ -24,11 +24,12 @@ interface State<T> {
 
 interface InitArgs<T> {
   columns: Array<StatefulTableColumn<T>>;
+  defaultSelected: T[];
   items: T[];
   pagination: boolean;
 }
 
-export const createReducerInit = <T>() => ({ columns, items, pagination }: InitArgs<T>): State<T> => {
+export const createReducerInit = <T>() => ({ columns, defaultSelected, items, pagination }: InitArgs<T>): State<T> => {
   return {
     currentItems: [],
     columns: columns.map(column => ({ ...column, isSortable: Boolean(column.sortKey) })),
@@ -40,7 +41,7 @@ export const createReducerInit = <T>() => ({ columns, items, pagination }: InitA
       itemsPerPageOptions: [25, 50, 100, 250],
       totalItems: items.length,
     },
-    selectedItems: [],
+    selectedItems: defaultSelected,
     sortable: {
       direction: 'ASC',
     },
@@ -65,11 +66,11 @@ function getItems<T>(
 
 export type Action<T> =
   | { type: 'COLUMNS_CHANGED'; columns: Array<StatefulTableColumn<T>> }
-  | { type: 'ITEMS_CHANGED'; payload: { items: T[]; isPaginationEnabled: boolean } }
+  | { type: 'ITEMS_CHANGED'; items: T[]; isPaginationEnabled: boolean }
   | { type: 'ITEMS_PER_PAGE_CHANGE'; itemsPerPage: number }
   | { type: 'PAGE_CHANGE'; page: number }
   | { type: 'SELECTED_ITEMS'; selectedItems: T[] }
-  | { type: 'SORT'; payload: { direction: TableSortDirection; columnHash: string; sortKey: keyof T } };
+  | { type: 'SORT'; direction: TableSortDirection; columnHash: string; sortKey?: keyof T };
 
 export const createReducer = <T>(): Reducer<State<T>, Action<T>> => (state, action) => {
   // tslint:disable-next-line: no-console
@@ -91,8 +92,8 @@ export const createReducer = <T>(): Reducer<State<T>, Action<T>> => (state, acti
 
     case 'ITEMS_CHANGED': {
       const currentPage = 1;
-      const items = action.payload.items;
-      const isPaginationEnabled = action.payload.isPaginationEnabled;
+      const items = action.items;
+      const isPaginationEnabled = action.isPaginationEnabled;
 
       const currentItems = getItems(items, isPaginationEnabled, {
         currentPage,
@@ -159,9 +160,14 @@ export const createReducer = <T>(): Reducer<State<T>, Action<T>> => (state, acti
     }
 
     case 'SORT': {
-      const direction = action.payload.direction;
-      const columnHash = action.payload.columnHash;
-      const sortKey = action.payload.sortKey;
+      const sortKey = action.sortKey;
+      const direction = action.direction;
+      const columnHash = action.columnHash;
+
+      if (!sortKey) {
+        return state;
+      }
+
       const items = sort(state.items, direction, sortKey);
 
       const currentItems = getItems(items, state.isPaginationEnabled, {

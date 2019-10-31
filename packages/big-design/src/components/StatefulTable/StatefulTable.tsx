@@ -14,24 +14,27 @@ export interface StatefulTableProps<T>
   columns: Array<StatefulTableColumn<T>>;
   pagination?: boolean;
   selectable?: boolean;
+  defaultSelected?: T[];
 }
 
-const InternalStatefulTable = <T extends TableItem>(
-  props: StatefulTableProps<T>,
-): React.ReactElement<StatefulTableProps<T>> => {
-  const { columns, itemName, items, keyField, pagination = true, selectable = true, stickyHeader } = props;
-
+const InternalStatefulTable = <T extends TableItem>({
+  columns = [],
+  defaultSelected = [],
+  itemName,
+  items = [],
+  keyField,
+  pagination = true,
+  selectable = true,
+  stickyHeader = false,
+}: StatefulTableProps<T>): React.ReactElement<StatefulTableProps<T>> => {
   const reducer = useMemo(() => createReducer<T>(), []);
   const reducerInit = useMemo(() => createReducerInit<T>(), []);
   const sortable = useMemo(() => columns.some(column => column.sortKey), [columns]);
 
-  const [state, dispatch] = useReducer(reducer, { columns, items, pagination }, reducerInit);
+  const [state, dispatch] = useReducer(reducer, { columns, defaultSelected, items, pagination }, reducerInit);
 
   useEffect(() => dispatch({ type: 'COLUMNS_CHANGED', columns }), [columns]);
-  useEffect(() => dispatch({ type: 'ITEMS_CHANGED', payload: { items, isPaginationEnabled: pagination } }), [
-    items,
-    pagination,
-  ]);
+  useEffect(() => dispatch({ type: 'ITEMS_CHANGED', items, isPaginationEnabled: pagination }), [items, pagination]);
 
   const onPageChange = useCallback((page: number) => dispatch({ type: 'PAGE_CHANGE', page }), []);
   const onItemsPerPageChange = useCallback(
@@ -44,13 +47,7 @@ const InternalStatefulTable = <T extends TableItem>(
   );
 
   const onSort = useCallback((columnHash: string, direction: TableSortDirection, column: StatefulTableColumn<T>) => {
-    if (column.sortKey === undefined) {
-      return;
-    }
-
-    const payload = { columnHash, direction, sortKey: column.sortKey };
-
-    dispatch({ type: 'SORT', payload });
+    dispatch({ type: 'SORT', columnHash, direction, sortKey: column.sortKey });
   }, []);
 
   const paginationOptions = useMemo(
