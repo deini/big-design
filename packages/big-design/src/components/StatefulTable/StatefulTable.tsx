@@ -27,7 +27,7 @@ const InternalStatefulTable = <T extends TableItem>({
   keyField,
   onSelectionChange,
   pagination = true,
-  selectable = true,
+  selectable = false,
   stickyHeader = false,
 }: StatefulTableProps<T>): React.ReactElement<StatefulTableProps<T>> => {
   const reducer = useMemo(() => createReducer<T>(), []);

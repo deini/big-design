@@ -61,13 +61,6 @@ export type Action<T> =
   | { type: 'SORT'; direction: TableSortDirection; columnHash: string; sortKey?: keyof T };
 
 export const createReducer = <T>(): Reducer<State<T>, Action<T>> => (state, action) => {
-  // tslint:disable-next-line: no-console
-  console.group('Action');
-  // tslint:disable-next-line: no-console
-  console.log(action);
-  // tslint:disable-next-line: no-console
-  console.groupEnd();
-
   switch (action.type) {
     case 'COLUMNS_CHANGED': {
       const columns = action.columns;
