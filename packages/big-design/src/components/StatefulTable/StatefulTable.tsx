@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useMemo, useReducer } from 'react';
 import { typedMemo } from '../../utils';
 import { Table, TableColumn, TableItem, TableProps, TableSortDirection } from '../Table';
 
-import { createReducer } from './reducer';
+import { createReducer, createReducerInit } from './reducer';
 
 export interface StatefulTableColumn<T> extends Omit<TableColumn<T>, 'isSortable'> {
   sortKey?: keyof T;
@@ -22,25 +22,10 @@ const InternalStatefulTable = <T extends TableItem>(
   const { columns, itemName, items, keyField, pagination = true, selectable = true, stickyHeader } = props;
 
   const reducer = useMemo(() => createReducer<T>(), []);
+  const reducerInit = useMemo(() => createReducerInit<T>(), []);
   const sortable = useMemo(() => columns.some(column => column.sortKey), [columns]);
 
-  // todo maybe move all this and use state initializer lazy
-  const [state, dispatch] = useReducer(reducer, {
-    currentItems: [],
-    columns: columns.map(column => ({ ...column, isSortable: Boolean(column.sortKey) })),
-    isPaginationEnabled: pagination,
-    items,
-    pagination: {
-      currentPage: 1,
-      itemsPerPage: 25,
-      itemsPerPageOptions: [25, 50, 100, 250],
-      totalItems: items.length,
-    },
-    selectedItems: [],
-    sortable: {
-      direction: 'ASC',
-    },
-  });
+  const [state, dispatch] = useReducer(reducer, { columns, items, pagination }, reducerInit);
 
   useEffect(() => dispatch({ type: 'COLUMNS_CHANGED', columns }), [columns]);
   useEffect(() => dispatch({ type: 'ITEMS_CHANGED', payload: { items, isPaginationEnabled: pagination } }), [

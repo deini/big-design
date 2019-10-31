@@ -5,7 +5,7 @@ import { TableSortDirection } from '../Table';
 import { StatefulTableColumn } from './StatefulTable';
 
 interface State<T> {
-  currentItems: any[];
+  currentItems: T[];
   columns: Array<StatefulTableColumn<T> & { isSortable: boolean }>;
   isPaginationEnabled: boolean;
   items: T[];
@@ -22,11 +22,36 @@ interface State<T> {
   };
 }
 
-const getItems = (
-  items: any[],
+interface InitArgs<T> {
+  columns: Array<StatefulTableColumn<T>>;
+  items: T[];
+  pagination: boolean;
+}
+
+export const createReducerInit = <T>() => ({ columns, items, pagination }: InitArgs<T>): State<T> => {
+  return {
+    currentItems: [],
+    columns: columns.map(column => ({ ...column, isSortable: Boolean(column.sortKey) })),
+    isPaginationEnabled: pagination,
+    items,
+    pagination: {
+      currentPage: 1,
+      itemsPerPage: 25,
+      itemsPerPageOptions: [25, 50, 100, 250],
+      totalItems: items.length,
+    },
+    selectedItems: [],
+    sortable: {
+      direction: 'ASC',
+    },
+  };
+};
+
+function getItems<T>(
+  items: T[],
   isPaginationEnabled: boolean,
   paginationOptions: { currentPage: number; itemsPerPage: number },
-) => {
+) {
   if (!isPaginationEnabled) {
     return items;
   }
@@ -36,7 +61,7 @@ const getItems = (
   const firstItem = Math.max(0, maxItems - paginationOptions.itemsPerPage);
 
   return items.slice(firstItem, lastItem);
-};
+}
 
 export type Action<T> =
   | { type: 'COLUMNS_CHANGED'; columns: Array<StatefulTableColumn<T>> }
@@ -45,8 +70,6 @@ export type Action<T> =
   | { type: 'PAGE_CHANGE'; page: number }
   | { type: 'SELECTED_ITEMS'; selectedItems: T[] }
   | { type: 'SORT'; payload: { direction: TableSortDirection; columnHash: string; sortKey: keyof T } };
-
-// export const reducer: Reducer<State, Action> = (state, action) => {
 
 export const createReducer = <T>(): Reducer<State<T>, Action<T>> => (state, action) => {
   // tslint:disable-next-line: no-console
@@ -167,7 +190,10 @@ export const createReducer = <T>(): Reducer<State<T>, Action<T>> => (state, acti
 };
 
 function sort<T>(items: T[], direction: TableSortDirection, sortKey: keyof T) {
-  return items
-    .concat()
-    .sort((a, b) => (direction === 'ASC' ? (a[sortKey] >= b[sortKey] ? 1 : -1) : a[sortKey] <= b[sortKey] ? 1 : -1));
+  return [...items].sort((firstItem, secondItem) => {
+    const firstValue = String(firstItem[sortKey]);
+    const secondValue = String(secondItem[sortKey]);
+
+    return direction === 'ASC' ? firstValue.localeCompare(secondValue) : secondValue.localeCompare(firstValue);
+  });
 }
