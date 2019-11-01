@@ -107,9 +107,9 @@ const tableColumnsProps: Prop[] = [
 ];
 
 export const StatefulTablePropTable: React.FC<PropTableWrapper> = props => (
-  <PropTable title="Table" propList={statefulTableProps} {...props} />
+  <PropTable title="StatefulTable" propList={statefulTableProps} {...props} />
 );
 
 export const StatefulTableColumnsPropTable: React.FC<PropTableWrapper> = props => (
-  <PropTable title="Table[Columns]" propList={tableColumnsProps} {...props} />
+  <PropTable title="StatefulTable[Columns]" propList={tableColumnsProps} {...props} />
 );

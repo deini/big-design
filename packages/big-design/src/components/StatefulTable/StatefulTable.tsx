@@ -45,13 +45,17 @@ const InternalStatefulTable = <T extends TableItem>({
     (itemsPerPage: number) => dispatch({ type: 'ITEMS_PER_PAGE_CHANGE', itemsPerPage }),
     [],
   );
-  const onItemSelect = useCallback((selectedItems: T[]) => {
-    dispatch({ type: 'SELECTED_ITEMS', selectedItems });
 
-    if (typeof onSelectionChange === 'function') {
-      onSelectionChange(selectedItems);
-    }
-  }, []);
+  const onItemSelect = useCallback(
+    (selectedItems: T[]) => {
+      dispatch({ type: 'SELECTED_ITEMS', selectedItems });
+
+      if (typeof onSelectionChange === 'function') {
+        onSelectionChange(selectedItems);
+      }
+    },
+    [onSelectionChange],
+  );
 
   const onSort = useCallback((columnHash: string, direction: TableSortDirection, column: StatefulTableColumn<T>) => {
     dispatch({ type: 'SORT', columnHash, direction, sortKey: column.sortKey });
