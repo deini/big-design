@@ -41,24 +41,24 @@ const getSimpleTable = (props: Partial<StatefulTableProps<TestItem>> = {}) => (
   />
 );
 
-test('renders paginated table by default', () => {
+test('renders a non-paginated table by default', () => {
   const { container } = render(getSimpleTable());
-
-  const rows = container.querySelectorAll('tbody > tr');
-
-  expect(rows.length).toBe(25);
-});
-
-test('pagination can be disabled', () => {
-  const { container } = render(getSimpleTable({ pagination: false }));
 
   const rows = container.querySelectorAll('tbody > tr');
 
   expect(rows.length).toBe(104);
 });
 
+test('pagination can be enabled', () => {
+  const { container } = render(getSimpleTable({ pagination: true }));
+
+  const rows = container.querySelectorAll('tbody > tr');
+
+  expect(rows.length).toBe(25);
+});
+
 test('changing pagination page changes the displayed items', () => {
-  const { getByTitle, getAllByTestId } = render(getSimpleTable());
+  const { getByTitle, getAllByTestId } = render(getSimpleTable({ pagination: true }));
 
   const pageOneItemName = getAllByTestId('name')[0].textContent;
   fireEvent.click(getByTitle('Next page'));
@@ -74,10 +74,10 @@ test('renders rows without checkboxes by default', () => {
 });
 
 test('renders rows without checkboxes when opting in to selectable', () => {
-  const { queryAllByRole } = render(getSimpleTable({ selectable: true }));
+  const { queryAllByRole } = render(getSimpleTable({ selectable: true, pagination: false }));
 
-  // 25 tbody rows + Select all checkbox
-  expect(queryAllByRole('checkbox').length).toBe(26);
+  // 104 tbody rows + Select all checkbox
+  expect(queryAllByRole('checkbox').length).toBe(105);
 });
 
 test('items are unselected by default', () => {
@@ -117,7 +117,7 @@ test('onSelectionChange gets called when an item selection happens', () => {
 test('multi-page select', () => {
   const onSelectionChange = jest.fn();
 
-  const { container, getByTitle } = render(getSimpleTable({ selectable: true, onSelectionChange }));
+  const { container, getByTitle } = render(getSimpleTable({ selectable: true, onSelectionChange, pagination: true }));
 
   let checkbox = container.querySelector('tbody > tr input') as HTMLInputElement;
 
@@ -140,7 +140,7 @@ test('select all selects all items in the current page', () => {
   const items: TestItem[] = [testItemOne, testItemTwo, testItemThree];
   const onSelectionChange = jest.fn();
 
-  const { getAllByRole } = render(getSimpleTable({ selectable: true, items, onSelectionChange }));
+  const { getAllByRole } = render(getSimpleTable({ selectable: true, items, onSelectionChange, pagination: true }));
 
   const checkbox = getAllByRole('checkbox')[0];
 
@@ -162,6 +162,7 @@ test('unselect all should unselect all items in page', () => {
       items,
       onSelectionChange,
       defaultSelected: [testItemOne, testItemTwo, testItemThree],
+      pagination: true,
     }),
   );
 
