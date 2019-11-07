@@ -20,7 +20,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   variant?: 'primary' | 'secondary' | 'subtle';
 }
 
-const RawButton: React.FC<ButtonProps & PrivateProps> = memo(({ forwardedRef, ...props }) => {
+const RawButton: React.FC<ButtonProps & PrivateProps> = /*#__PURE__*/ memo(({ forwardedRef, ...props }) => {
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     const { disabled, isLoading, onClick } = props;
 
@@ -50,22 +50,30 @@ const RawButton: React.FC<ButtonProps & PrivateProps> = memo(({ forwardedRef, ..
   );
 });
 
-export const StyleableButton = React.forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => (
-  <RawButton {...props} forwardedRef={ref} />
-));
-
-export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({ className, style, ...props }, ref) => (
-  <RawButton {...props} forwardedRef={ref} />
-));
-
 const defaultProps = {
   actionType: 'normal' as 'normal',
   isLoading: false,
   variant: 'primary' as 'primary',
 };
 
-Button.displayName = 'Button';
-Button.defaultProps = { ...defaultProps };
+export const StyleableButton = /*#__PURE__*/ (() => {
+  const InternalStyleableButton = React.forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => (
+    <RawButton {...props} forwardedRef={ref} />
+  ));
 
-StyleableButton.displayName = 'StyleableButton';
-StyleableButton.defaultProps = { ...defaultProps };
+  InternalStyleableButton.displayName = 'StyleableButton';
+  InternalStyleableButton.defaultProps = { ...defaultProps };
+
+  return InternalStyleableButton;
+})();
+
+export const Button = /*#__PURE__*/ (() => {
+  const InternalButton = React.forwardRef<HTMLButtonElement, ButtonProps>(({ className, style, ...props }, ref) => (
+    <RawButton {...props} forwardedRef={ref} />
+  ));
+
+  InternalButton.displayName = 'Button';
+  InternalButton.defaultProps = { ...defaultProps };
+
+  return InternalButton;
+})();
