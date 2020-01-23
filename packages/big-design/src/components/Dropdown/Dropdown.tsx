@@ -364,7 +364,7 @@ export class Dropdown<T extends any> extends React.PureComponent<DropdownProps<T
     }
 
     return scrollIntoView(element, {
-      behavior: instantScroll ? 'instant' : 'smooth',
+      behavior: instantScroll ? 'auto' : 'smooth',
       block: 'nearest',
       inline: 'nearest',
       scrollMode: 'if-needed',
