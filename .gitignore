@@ -7,3 +7,5 @@ packages/docs/.next
 packages/docs/out
 packages/docs/pages/Dev
 .idea
+.yarn/unplugged
+.yarn/build-state.yml
