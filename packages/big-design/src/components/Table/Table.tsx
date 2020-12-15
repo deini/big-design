@@ -1,4 +1,5 @@
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 
 import { useEventCallback, useUniqueId } from '../../hooks';
 import { MarginProps } from '../../mixins';
@@ -119,23 +120,34 @@ const InternalTable = <T extends TableItem>(props: TableProps<T>): React.ReactEl
   );
 
   const renderItems = () => (
-    <Body withFirstRowBorder={headerless}>
-      {items.map((item: T, index) => {
-        const key = getItemKey(item, index);
-        const isSelected = selectedItems.has(item);
+    <Droppable droppableId="priority-droppable">
+      {(provided) => (
+        <Body ref={provided.innerRef} {...provided.droppableProps}>
+          {items.map((item: T, index) => {
+            const key = getItemKey(item, index);
+            const isSelected = selectedItems.has(item);
 
-        return (
-          <Row
-            columns={columns}
-            isSelectable={isSelectable}
-            isSelected={isSelected}
-            item={item}
-            key={key}
-            onItemSelect={onItemSelect}
-          />
-        );
-      })}
-    </Body>
+            return (
+              <Draggable key={key} draggableId={String(key)} index={index}>
+                {(provided) => (
+                  <Row
+                    {...provided.dragHandleProps}
+                    {...provided.draggableProps}
+                    ref={provided.innerRef}
+                    columns={columns}
+                    isSelectable={isSelectable}
+                    isSelected={isSelected}
+                    item={item}
+                    onItemSelect={onItemSelect}
+                  />
+                )}
+              </Draggable>
+            );
+          })}
+          {provided.placeholder}
+        </Body>
+      )}
+    </Droppable>
   );
 
   const renderEmptyState = () => {
@@ -162,8 +174,10 @@ const InternalTable = <T extends TableItem>(props: TableProps<T>): React.ReactEl
         />
       )}
       <StyledTable {...rest} id={tableIdRef.current}>
-        {renderHeaders()}
-        {renderItems()}
+        <DragDropContext onDragEnd={(a: any) => console.log(a)}>
+          {renderHeaders()}
+          {renderItems()}
+        </DragDropContext>
       </StyledTable>
 
       {renderEmptyState()}
