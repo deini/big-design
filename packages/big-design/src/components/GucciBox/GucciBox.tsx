@@ -5,7 +5,7 @@ import { StyledGucciBox } from './styled';
 
 type StyledVariants = VariantProps<typeof StyledGucciBox>;
 
-export interface BoxProps extends HTMLAttributes<HTMLDivElement>, StyledVariants {
+export interface GucciBoxProps extends HTMLAttributes<HTMLDivElement>, StyledVariants {
   as?: keyof JSX.IntrinsicElements | React.ComponentType<any>;
 }
 
@@ -13,12 +13,12 @@ interface PrivateProps {
   forwardedRef: React.Ref<HTMLDivElement>;
 }
 
-const RawBox: React.FC<BoxProps & PrivateProps> = ({ forwardedRef, ...props }) => (
+const RawBox: React.FC<GucciBoxProps & PrivateProps> = ({ forwardedRef, ...props }) => (
   <StyledGucciBox ref={forwardedRef} {...props} />
 );
 
 export const GucciBox = memo(
-  forwardRef<HTMLDivElement, BoxProps>((props, ref) => <RawBox {...props} forwardedRef={ref} />),
+  forwardRef<HTMLDivElement, GucciBoxProps>((props, ref) => <RawBox {...props} forwardedRef={ref} />),
 );
 
 GucciBox.displayName = 'GucciBox';

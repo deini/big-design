@@ -9,7 +9,7 @@ export * from './Chip';
 export * from './Collapse';
 export * from './Datepicker';
 export * from './Dropdown';
-export * from './Flex';
+export * from './GucciFlex';
 export * from './Fieldset';
 export * from './Form';
 export * from './GucciBox';
