@@ -1,12 +1,10 @@
 import { styled } from '@bigcommerce/big-design-theme/stitches';
 import { clearFix } from 'polished';
 
-import { cssDisplay } from '../../mixins/display/stitches';
-import { cssMargins } from '../../mixins/margins/stitches';
-import { cssPaddings } from '../../mixins/paddings/stitches';
 import { tokenVariants } from '../../utils';
+import { displayVariants, marginVariants, paddingVariants } from '../../variants';
 
-export const StyledGucciBox = styled('div', cssMargins, cssPaddings, cssDisplay, {
+export const StyledGucciBox = styled('div', marginVariants, paddingVariants, displayVariants, {
   boxSizing: 'border-box',
 
   variants: {

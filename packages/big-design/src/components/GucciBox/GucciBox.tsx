@@ -13,7 +13,9 @@ interface PrivateProps {
   forwardedRef: React.Ref<HTMLDivElement>;
 }
 
-const RawBox: React.FC<BoxProps & PrivateProps> = (props) => <StyledGucciBox ref={props.forwardedRef} {...props} />;
+const RawBox: React.FC<BoxProps & PrivateProps> = ({ forwardedRef, ...props }) => (
+  <StyledGucciBox ref={forwardedRef} {...props} />
+);
 
 export const GucciBox = memo(
   forwardRef<HTMLDivElement, BoxProps>((props, ref) => <RawBox {...props} forwardedRef={ref} />),
