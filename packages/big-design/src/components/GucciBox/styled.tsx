@@ -1,7 +1,9 @@
 import { styled } from '@bigcommerce/big-design-theme/stitches';
 
+import { tokenVariants } from '../../utils';
+
 export const StyledGucciBox = styled('div', {
-  backgroundColor: 'transparent',
+  backgroundColor: tokenVariants({ token: 'color', css: (value) => ({ color: value }) }),
 });
 
 // import { theme as defaultTheme } from '@bigcommerce/big-design-theme';
