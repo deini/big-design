@@ -1,5 +1,22 @@
-import React from 'react';
+import { VariantProps } from '@stitches/react';
+import React, { forwardRef, HTMLAttributes, memo } from 'react';
 
-export const GucciBox = () => {
-  return <div>This is the gucci box component</div>;
-};
+import { StyledGucciBox } from './styled';
+
+type StyledVariants = VariantProps<typeof StyledGucciBox>;
+
+export interface BoxProps extends HTMLAttributes<HTMLDivElement>, StyledVariants {
+  as?: keyof JSX.IntrinsicElements | React.ComponentType<any>;
+}
+
+interface PrivateProps {
+  forwardedRef: React.Ref<HTMLDivElement>;
+}
+
+const RawBox: React.FC<BoxProps & PrivateProps> = (props) => <StyledGucciBox ref={props.forwardedRef} {...props} />;
+
+export const GucciBox = memo(
+  forwardRef<HTMLDivElement, BoxProps>((props, ref) => <RawBox {...props} forwardedRef={ref} />),
+);
+
+GucciBox.displayName = 'GucciBox';

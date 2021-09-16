@@ -1,12 +1,57 @@
 import { styled } from '@bigcommerce/big-design-theme/stitches';
+import { clearFix } from 'polished';
 
-import { cssMargins } from 'src/mixins/margins/stitches';
-
+import { cssDisplay } from '../../mixins/display/stitches';
+import { cssMargins } from '../../mixins/margins/stitches';
+import { cssPaddings } from '../../mixins/paddings/stitches';
 import { tokenVariants } from '../../utils';
 
-export const StyledGucciBox = styled('div', cssMargins, {
+export const StyledGucciBox = styled('div', cssMargins, cssPaddings, cssDisplay, {
+  boxSizing: 'border-box',
+
   variant: {
-    backgroundColor: tokenVariants({ token: 'colors', css: (value) => ({ backgroundColor: value }) }),
+    backgroundColor: tokenVariants({
+      token: 'colors',
+      css: (value) => ({ backgroundColor: value }),
+    }),
+    border: tokenVariants({
+      token: 'border',
+      css: (value) => ({ border: value }),
+    }),
+    borderTop: tokenVariants({
+      token: 'border',
+      css: (value) => ({ borderTop: value }),
+    }),
+    borderRight: tokenVariants({
+      token: 'border',
+      css: (value) => ({ borderRight: value }),
+    }),
+    borderBottom: tokenVariants({
+      token: 'border',
+      css: (value) => ({ borderBottom: value }),
+    }),
+    borderLeft: tokenVariants({
+      token: 'border',
+      css: (value) => ({ borderLeft: value }),
+    }),
+    borderRadius: tokenVariants({
+      token: 'radii',
+      css: (value) => ({ borderRadius: value }),
+    }),
+    clearfix: {
+      true: clearFix(),
+    },
+    shadow: tokenVariants({
+      token: 'shadows',
+      css: (value) => ({
+        boxShadow: value,
+        borderRadius: '$normal',
+      }),
+    }),
+    zIndex: tokenVariants({
+      token: 'zIndices',
+      css: (value) => ({ zIndex: value }),
+    }),
   },
 });
 
@@ -19,62 +64,11 @@ export const StyledGucciBox = styled('div', cssMargins, {
 // import { BoxProps } from './Box';
 
 // export const StyledBox = styled.div<BoxProps>`
-//   ${withDisplay()}
-//   ${withMargins()}
-//   ${withPaddings()}
+
 //   box-sizing: border-box;
 
 //   ${({ clearfix }) => clearfix && clearFix()};
 
-//   ${({ backgroundColor, theme }) =>
-//     backgroundColor &&
-//     css`
-//       background-color: ${theme.colors[backgroundColor]};
-//     `};
-
-//   ${({ shadow, theme }) => shadow && theme.shadow[shadow]};
-
-//   ${({ border, theme }) =>
-//     border &&
-//     css`
-//       border: ${theme.border[border]};
-//     `};
-
-//   ${({ borderTop, theme }) =>
-//     borderTop &&
-//     css`
-//       border-top: ${theme.border[borderTop]};
-//     `};
-
-//   ${({ borderRight, theme }) =>
-//     borderRight &&
-//     css`
-//       border-right: ${theme.border[borderRight]};
-//     `};
-
-//   ${({ borderBottom, theme }) =>
-//     borderBottom &&
-//     css`
-//       border-bottom: ${theme.border[borderBottom]};
-//     `};
-
-//   ${({ borderLeft, theme }) =>
-//     borderLeft &&
-//     css`
-//       border-left: ${theme.border[borderLeft]};
-//     `};
-
-//   ${({ borderRadius, theme }) =>
-//     borderRadius &&
-//     css`
-//       border-radius: ${theme.borderRadius[borderRadius]};
-//     `};
-
-//   ${({ zIndex, theme }) =>
-//     zIndex &&
-//     css`
-//       z-index: ${theme.zIndex[zIndex]};
-//     `};
 // `;
 
 // StyledBox.defaultProps = { theme: defaultTheme };
