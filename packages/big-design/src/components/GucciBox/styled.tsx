@@ -1,9 +1,13 @@
 import { styled } from '@bigcommerce/big-design-theme/stitches';
 
+import { cssMargins } from 'src/mixins/margins/stitches';
+
 import { tokenVariants } from '../../utils';
 
-export const StyledGucciBox = styled('div', {
-  backgroundColor: tokenVariants({ token: 'color', css: (value) => ({ color: value }) }),
+export const StyledGucciBox = styled('div', cssMargins, {
+  variant: {
+    backgroundColor: tokenVariants({ token: 'colors', css: (value) => ({ backgroundColor: value }) }),
+  },
 });
 
 // import { theme as defaultTheme } from '@bigcommerce/big-design-theme';
