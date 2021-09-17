@@ -1,6 +1,7 @@
 import { VariantProps } from '@stitches/react';
-import React, { forwardRef, useMemo } from 'react';
+import React, { forwardRef } from 'react';
 
+import { responsiveHelper, StitchesResponsiveProps } from '../../../utils/stitchesResponsive';
 import { GucciBoxProps } from '../../GucciBox';
 
 import { StyledFlexItem } from './styled';
@@ -11,10 +12,10 @@ interface PrivateProps {
 
 export type FlexItemProps = GucciBoxProps &
   VariantProps<typeof StyledFlexItem> & {
-    flexGrow?: number;
-    flexOrder?: number;
-    flexShrink?: number;
-    flexBasis?: 'auto' | 'fill' | 'min-content' | 'max-content' | 'fit-content' | 'content' | string;
+    flexGrow?: StitchesResponsiveProps<'flexGrow'>;
+    flexOrder?: StitchesResponsiveProps<'order'>;
+    flexShrink?: StitchesResponsiveProps<'flexShrink'>;
+    flexBasis?: StitchesResponsiveProps<'flexBasis'>;
   };
 
 const RawFlexItem: React.FC<FlexItemProps & PrivateProps> = ({
@@ -26,17 +27,14 @@ const RawFlexItem: React.FC<FlexItemProps & PrivateProps> = ({
   flexShrink,
   ...props
 }) => {
-  const styles = useMemo(
-    () => ({
-      flexGrow,
-      flexOrder,
-      flexShrink,
-      flexBasis,
-    }),
-    [flexGrow, flexOrder, flexShrink, flexBasis],
-  );
+  const className = responsiveHelper({
+    flexGrow,
+    flexShrink,
+    flexBasis,
+    order: flexOrder,
+  });
 
-  return <StyledFlexItem ref={forwardedRef} as={as} styles={styles} {...props} />;
+  return <StyledFlexItem ref={forwardedRef} className={className} as={as} {...props} />;
 };
 
 export const FlexItem = forwardRef<HTMLDivElement, FlexItemProps>((props, ref) => (
