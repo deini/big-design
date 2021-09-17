@@ -1,7 +1,6 @@
 export * from './Alert';
 export * from './Badge';
 export * from './Box';
-export * from './Button';
 export * from './ButtonGroup';
 export * from './Counter';
 export * from './Checkbox';
@@ -16,6 +15,7 @@ export * from './GlobalStyles';
 export * from './Grid';
 export * from './GucciBadge';
 export * from './GucciBox';
+export * from './GucciButton';
 export * from './InlineMessage';
 export * from './Input';
 export * from './Link';
