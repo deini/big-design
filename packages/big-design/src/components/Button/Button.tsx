@@ -1,5 +1,7 @@
 import React, { ButtonHTMLAttributes, forwardRef, memo, Ref } from 'react';
 
+import { typedMemo } from 'src/utils';
+
 import { MarginProps } from '../../mixins';
 import { ProgressCircle } from '../ProgressCircle';
 
@@ -9,7 +11,9 @@ interface PrivateProps {
   forwardedRef: Ref<HTMLButtonElement>;
 }
 
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>, MarginProps {
+export interface ButtonProps<T extends React.ElementType> extends MarginProps {
+  as?: T;
+  children?: React.ReactNode;
   actionType?: 'normal' | 'destructive';
   iconLeft?: React.ReactNode;
   iconOnly?: React.ReactNode;
@@ -19,39 +23,50 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>, Ma
   variant?: 'primary' | 'secondary' | 'subtle';
 }
 
-const RawButton: React.FC<ButtonProps & PrivateProps> = memo(({ forwardedRef, ...props }) => {
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    const { disabled, isLoading, onClick } = props;
+type RawButtonProps<T extends React.ElementType> = ButtonProps<T> &
+  PrivateProps &
+  Omit<React.ComponentPropsWithoutRef<T>, keyof ButtonProps<T>>;
 
-    if (onClick && !disabled && !isLoading) {
-      onClick(event);
-    }
-  };
+const RawButton = typedMemo(
+  <T extends React.ElementType = 'button'>({ as, forwardedRef, ...props }: RawButtonProps<T>) => {
+    const Component: React.ElementType = as || 'button';
 
-  const renderLoadingSpinner = () => {
+    const handleClick = (event: React.MouseEvent) => {
+      const { disabled, isLoading, onClick } = props;
+
+      if (onClick && !disabled && !isLoading) {
+        onClick(event);
+      }
+    };
+
+    const renderLoadingSpinner = () => {
+      return (
+        <LoadingSpinnerWrapper alignItems="center">
+          <ProgressCircle size="xxSmall" />
+        </LoadingSpinnerWrapper>
+      );
+    };
+
     return (
-      <LoadingSpinnerWrapper alignItems="center">
-        <ProgressCircle size="xxSmall" />
-      </LoadingSpinnerWrapper>
+      <StyledButton as={Component} className="bd-button" {...props} onClick={handleClick} ref={forwardedRef}>
+        {props.isLoading ? renderLoadingSpinner() : null}
+        <ContentWrapper isLoading={props.isLoading}>
+          {!props.iconOnly && props.iconLeft}
+          {props.iconOnly}
+          {!props.iconOnly && props.children}
+          {!props.iconOnly && props.iconRight}
+        </ContentWrapper>
+      </StyledButton>
     );
-  };
+  },
+);
 
-  return (
-    <StyledButton className="bd-button" {...props} onClick={handleClick} ref={forwardedRef}>
-      {props.isLoading ? renderLoadingSpinner() : null}
-      <ContentWrapper isLoading={props.isLoading}>
-        {!props.iconOnly && props.iconLeft}
-        {props.iconOnly}
-        {!props.iconOnly && props.children}
-        {!props.iconOnly && props.iconRight}
-      </ContentWrapper>
-    </StyledButton>
-  );
-});
-
-export const StyleableButton = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => (
-  <RawButton {...props} forwardedRef={ref} />
-));
+// export const StyleableButton = forwardRef<HTMLElement, ButtonProps>((props, ref) => (
+export const StyleableButton = forwardRef(
+  <T extends React.ElementType>(props: ButtonProps<T>, ref: Ref<HTMLButtonElement>) => (
+    <RawButton {...props} forwardedRef={ref} />
+  ),
+);
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({ className, style, ...props }, ref) => (
   <RawButton {...props} forwardedRef={ref} />
