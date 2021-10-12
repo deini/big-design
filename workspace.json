@@ -2,7 +2,22 @@
   "version": 2,
   "projects": {
     "@bigcommerce/big-design": {
-      "root": "packages/big-design"
+      "root": "packages/big-design",
+      "targets": {
+        "test": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "yarn run test",
+            "cwd": "packages/big-design"
+          },
+          "dependsOn": [
+            {
+              "target": "build",
+              "projects": "dependencies"
+            }
+          ]
+        }
+      }
     },
     "@bigcommerce/big-design-icons": {
       "root": "packages/big-design-icons"
@@ -22,7 +37,7 @@
             "command": "yarn run build",
             "cwd": "packages/docs"
           },
-          "outputs": ["packages/docs/out"]
+          "outputs": ["packages/docs/out", "packages/docs/.next"]
         }
       }
     },
